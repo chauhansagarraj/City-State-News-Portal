@@ -7,6 +7,9 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/user.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
+import { journalistRoutes } from "./routes/journalist.routes.js";
+import journalistDashboardRoutes from "./routes/journalistDashboard.routes.js";
+import commentRoutes from "./routes/comment.routes.js";
 import generateToken from "./utils/generateTokens.js";
 dotenv.config();
 connectDB();
@@ -23,7 +26,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/profile", profileRoutes);
-
+app.use("/api/journalist", journalistRoutes);
+app.use("/api/journalist-dashboard", journalistDashboardRoutes);
+app.use("/api/comments", commentRoutes);
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err);
   res.status(500).json({

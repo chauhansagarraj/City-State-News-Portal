@@ -10,6 +10,10 @@ import {
   blockUser,
   unblockUser,
   getAllUsers,
+  getPendingArticles,
+  approveArticle,
+  rejectArticle,
+  publishArticle,
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
@@ -56,6 +60,34 @@ router.get(
   protect,
   authorizeRoles("admin"),
   getAllUsers
+);
+
+router.get(
+  "/pendingArticles",
+  protect,
+  authorizeRoles("admin"),
+  getPendingArticles
+);
+
+router.put(
+  "/approveArticle/:id",
+  protect,
+  authorizeRoles("admin"),
+  approveArticle
+);
+
+router.put(
+  "/rejectArticle/:id",
+  protect,
+  authorizeRoles("admin"),
+  rejectArticle
+);
+
+router.put(
+  "/publishArticle/:id",
+  protect,
+  authorizeRoles("admin"),
+  publishArticle
 );
 
 export default router;
