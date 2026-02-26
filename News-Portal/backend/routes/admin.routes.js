@@ -14,6 +14,10 @@ import {
   approveArticle,
   rejectArticle,
   publishArticle,
+  getAllCampaigns,
+  getPendingCampaigns,
+  approveCampaign,
+  rejectCampaign,
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
@@ -89,5 +93,34 @@ router.put(
   authorizeRoles("admin"),
   publishArticle
 );
+
+router.get(
+  "/campaigns",
+  protect,
+  authorizeRoles("admin"),
+  getAllCampaigns
+);
+
+router.get(
+  "/pendingCampaigns",
+  protect,
+  authorizeRoles("admin"),
+  getPendingCampaigns
+);
+
+router.put(
+  "/approveCampaign/:id",
+  protect,
+  authorizeRoles("admin"),
+  approveCampaign
+);
+
+router.put(
+  "/rejectCampaign/:id",
+  protect,
+  authorizeRoles("admin"),
+  rejectCampaign
+);
+
 
 export default router;

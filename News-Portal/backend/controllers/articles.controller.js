@@ -5,17 +5,17 @@ export const createArticle = async (req, res) => {
   try {
     const { title, content, category, images , state , city  } = req.body;
 
-    // 🔴 Validation
+    //  Validation
     if (!title || !content || !category) {
       return res.status(400).json({
         message: "Title, content, and category are required",
       });
     }
 
-    // 🔐 Author from JWT (protect middleware)
+    //  Author from JWT (protect middleware)
     const authorId = req.user._id;
 
-    // 📰 Create article as draft
+    //  Create article as draft
     const article = await Article.create({
       title,
       content,
@@ -57,7 +57,7 @@ export const editArticle = async (req, res) => {
       images,
     } = req.body;
 
-    // 🔎 Find article
+    //  Find article
     const article = await Article.findById(articleId);
 
     if (!article) {
@@ -67,7 +67,7 @@ export const editArticle = async (req, res) => {
       });
     }
 
-    // 🔐 Check ownership
+    //  Check ownership
     if (article.author.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
@@ -75,7 +75,7 @@ export const editArticle = async (req, res) => {
       });
     }
 
-    // 🚫 Allow edit only for draft or rejected
+    //  Allow edit only for draft or rejected
     if (!["draft", "rejected"].includes(article.status)) {
       return res.status(400).json({
         success: false,
@@ -83,7 +83,7 @@ export const editArticle = async (req, res) => {
       });
     }
 
-    // ✏️ Update fields (only if provided)
+    //  Update fields (only if provided)
     article.title = title || article.title;
     article.content = content || article.content;
     article.category = category || article.category;
@@ -123,7 +123,7 @@ export const submitForApproval = async (req, res) => {
       });
     }
 
-    // 🔐 Ownership check
+    //  Ownership check
     if (article.author.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
@@ -131,7 +131,7 @@ export const submitForApproval = async (req, res) => {
       });
     }
 
-    // 🚫 Allow submit only if draft or rejected
+    //  Allow submit only if draft or rejected
     if (!["draft", "rejected"].includes(article.status)) {
       return res.status(400).json({
         success: false,
@@ -139,7 +139,7 @@ export const submitForApproval = async (req, res) => {
       });
     }
 
-    // 📨 Change status
+    //  Change status
     article.status = "pending";
     await article.save();
 

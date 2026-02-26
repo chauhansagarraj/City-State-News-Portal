@@ -9,7 +9,12 @@ import adminRoutes from "./routes/admin.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
 import { journalistRoutes } from "./routes/journalist.routes.js";
 import journalistDashboardRoutes from "./routes/journalistDashboard.routes.js";
+import readerRoutes from "./routes/reader.routes.js";
 import commentRoutes from "./routes/comment.routes.js";
+import likeRoutes from "./routes/like.routes.js";
+import ratingsRoutes from "./routes/ratings.routes.js";
+import readerDashboardRoutes from "./routes/readerDashboard.routes.js";
+import advertiserRoutes from "./routes/advertiser.routes.js";
 import generateToken from "./utils/generateTokens.js";
 dotenv.config();
 connectDB();
@@ -29,12 +34,19 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/journalist", journalistRoutes);
 app.use("/api/journalist-dashboard", journalistDashboardRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/reader", readerRoutes);
+app.use("/api/likes", likeRoutes);
+app.use("/api/ratings", ratingsRoutes);
+app.use("/api/reader", readerDashboardRoutes);
+app.use("/api/advertiser", advertiserRoutes);
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err);
   res.status(500).json({
     message: err.message || "Server Error",
   });
 });
+
+app.set("trust proxy", true);
 
 const PORT = process.env.PORT || 5000;
 

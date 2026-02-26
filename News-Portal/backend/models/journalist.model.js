@@ -15,26 +15,26 @@ const articleSchema = new mongoose.Schema(
     },
 
     category: {
-    type: String,
-    enum: [
-      "Politics",
-      "Sports",
-      "Business",
-      "Entertainment",
-      "Technology",
-      "Crime",
-      "Health",
-      "Education",
-      "Environment",
-      "Science",
-      "World",
-      "Local",
-      "Opinion",
-    ],
-    required: true
-  },
+      type: String,
+      enum: [
+        "Politics",
+        "Sports",
+        "Business",
+        "Entertainment",
+        "Technology",
+        "Crime",
+        "Health",
+        "Education",
+        "Environment",
+        "Science",
+        "World",
+        "Local",
+        "Opinion",
+      ],
+      required: true,
+    },
 
-     state: {
+    state: {
       type: String,
       required: true,
       // Gujarat, Maharashtra, etc.
@@ -45,7 +45,6 @@ const articleSchema = new mongoose.Schema(
       required: true,
       // Ahmedabad, Surat, etc.
     },
-
 
     images: [
       {
@@ -74,11 +73,38 @@ const articleSchema = new mongoose.Schema(
       type: String,
     },
 
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    ratings: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        value: {
+          type: Number,
+          min: 1,
+          max: 5,
+          required: true,
+        },
+      },
+    ],
+
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
+
     publishedAt: {
       type: Date,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Article", articleSchema);

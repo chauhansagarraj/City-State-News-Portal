@@ -4,11 +4,11 @@ export const getJournalistDashboard = async (req, res) => {
   try {
     const journalistId = req.user._id;
 
-    // 📰 Fetch journalist articles
+    //  Fetch journalist articles
     const articles = await Article.find({ author: journalistId })
       .sort({ createdAt: -1 });
 
-    // 📊 Statistics
+    //  Statistics
     const totalArticles = articles.length;
 
     const drafts = articles.filter(a => a.status === "draft").length;

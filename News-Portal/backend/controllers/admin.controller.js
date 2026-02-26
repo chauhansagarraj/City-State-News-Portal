@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import Article from "../models/journalist.model.js";
+import Campaign from "../models/advertiser.model.js";
 
 //  1. Get Pending Users (Journalist & Advertiser)
 export const getPendingUsers = async (req, res) => {
@@ -254,4 +255,49 @@ export const publishArticle = async (req, res) => {
       message: "Server error",
     });
   }
+};
+
+export const getPendingCampaigns = async (req, res) => {
+  const campaigns = await Campaign.find({
+    status: "pending",
+  }).populate("advertiser", "name email");
+
+  res.json(campaigns);
+};
+
+export const approveCampaign = async (req, res) => {
+  const campaign = await Campaign.findById(req.params.id);
+
+  if (!campaign)
+    return res.status(404).json({ message: "Campaign not found" });
+
+  campaign.status = "approved";
+
+  await campaign.save();
+
+  res.json({ message: "Campaign approved" });
+};
+
+export const rejectCampaign = async (req, res) => {
+  const { reason } = req.body;
+
+  const campaign = await Campaign.findById(req.params.id);
+
+  if (!campaign)
+    return res.status(404).json({ message: "Campaign not found" });
+
+  campaign.status = "rejected";
+  campaign.rejectionReason = reason;
+
+  await campaign.save();
+
+  res.json({ message: "Campaign rejected" });
+};
+
+export const getAllCampaigns = async (req, res) => {
+  const campaigns = await Campaign.find()
+    .populate("advertiser", "name email")
+    .sort({ createdAt: -1 });
+
+  res.json(campaigns);
 };
