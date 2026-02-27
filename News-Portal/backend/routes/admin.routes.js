@@ -20,6 +20,8 @@ import {
   rejectCampaign,
 } from "../controllers/admin.controller.js";
 
+import { getAdminDashboard , getMonthlyRevenue , getTopCampaigns , getLocationAnalytics } from "../controllers/adminDashboard.js";
+
 const router = express.Router();
 
 // Only Admin can access all routes
@@ -120,6 +122,34 @@ router.put(
   protect,
   authorizeRoles("admin"),
   rejectCampaign
+);
+
+router.get(
+  "/dashboard",
+  protect,
+  authorizeRoles("admin"),
+  getAdminDashboard
+);
+
+router.get(
+  "/analytics/revenue/monthly",
+  protect,
+  authorizeRoles("admin"),
+  getMonthlyRevenue
+);
+
+router.get(
+  "/analytics/top-campaigns",
+  protect,
+  authorizeRoles("admin"),
+  getTopCampaigns
+);
+
+router.get(
+  "/analytics/location",
+  protect,
+  authorizeRoles("admin"),
+  getLocationAnalytics
 );
 
 

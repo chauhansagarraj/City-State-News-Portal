@@ -52,6 +52,31 @@ const userSchema = new mongoose.Schema(
     gstNumber: String,
     companyWebsite: String,
 
+    // ================= WALLET =================
+wallet: {
+  balance: { type: Number, default: 0 },
+
+  transactionHistory: [
+    {
+      type: {
+        type: String,
+        enum: ["add", "spent", "refund"],
+        required: true,
+      },
+      amount: { type: Number, required: true },
+
+      campaign: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Campaign",
+      },
+
+      description: String,
+
+      date: { type: Date, default: Date.now },
+    },
+  ],
+},
+
     // ================= ID VERIFICATION =================
     governmentIDNumber: String,
     idProofImage: String, // Cloudinary URL

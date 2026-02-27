@@ -17,11 +17,13 @@ const campaignSchema = new mongoose.Schema(
     description: String,
 
     media: {
-      url: { type: String, required: true },
+      url: { type: String,
+        //  required: true
+         },
       type: {
         type: String,
         enum: ["image", "video", "gif"],
-        required: true,
+        // required: true,
       },
     },
 
@@ -68,6 +70,7 @@ const campaignSchema = new mongoose.Schema(
       ],
       default: "draft",
     },
+
 
     analytics: {
       impressions: { type: Number, default: 0 },

@@ -9,7 +9,8 @@ import {
   pauseCampaign,
   resumeCampaign,
   trackImpression,
-  trackClick
+  trackClick,
+  addFunds
 } from "../controllers/advertiser.controller.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { authorizeRoles } from "../middleware/roleMiddleware.js";
@@ -27,5 +28,6 @@ router.put("/pause/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser
 router.put("/resume/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, resumeCampaign);
 router.post("/track/impression/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, trackImpression);
 router.post("/track/click/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, trackClick);
+router.post("/add-funds", protect,authorizeRoles("advertiser"),verifyApprovedUser, addFunds);
 
 export default router;

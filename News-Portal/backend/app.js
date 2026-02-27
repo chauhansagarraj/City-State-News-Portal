@@ -15,6 +15,8 @@ import likeRoutes from "./routes/like.routes.js";
 import ratingsRoutes from "./routes/ratings.routes.js";
 import readerDashboardRoutes from "./routes/readerDashboard.routes.js";
 import advertiserRoutes from "./routes/advertiser.routes.js";
+import advertiserDashboardRoutes from "./routes/advertiserDashboard.routes.js";
+import "./utils/campaignSchedular.js";
 import generateToken from "./utils/generateTokens.js";
 dotenv.config();
 connectDB();
@@ -39,6 +41,7 @@ app.use("/api/likes", likeRoutes);
 app.use("/api/ratings", ratingsRoutes);
 app.use("/api/reader", readerDashboardRoutes);
 app.use("/api/advertiser", advertiserRoutes);
+app.use("/api/advertiser-dashboard", advertiserDashboardRoutes);
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err);
   res.status(500).json({
