@@ -22,6 +22,11 @@ export const getJournalistDashboard = async (req, res) => {
       0
     );
 
+    const totalLikes = articles.reduce(
+      (sum, article) => sum + (article.likes ? article.likes.length : 0),
+      0
+    );
+
     res.status(200).json({
       success: true,
 
@@ -32,6 +37,7 @@ export const getJournalistDashboard = async (req, res) => {
         rejected,
         published,
         totalViews,
+        totalLikes,
       },
 
       articles,

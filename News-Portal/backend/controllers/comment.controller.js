@@ -25,6 +25,8 @@ export const addComment = async (req, res) => {
       user: req.user._id,
       content,
     });
+        // comment = await comment.populate("user", "name");
+
 
     res.status(201).json({
       success: true,
@@ -187,6 +189,7 @@ export const addReply = async (req, res) => {
       content,
       parentComment: parentCommentId,
     });
+    reply = await reply.populate("user", "name");
 
     res.status(201).json({
       success: true,

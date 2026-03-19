@@ -20,8 +20,8 @@ export const createArticle = async (req, res) => {
       title,
       content,
       category,
-        state,
-        city,
+        // state,
+        // city,
       images: images || [],
       author: authorId,
       status: "draft",
@@ -38,10 +38,45 @@ export const createArticle = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: "Server error while creating article",
+      message: error.message,
     });
   }
 };
+
+export const getArticleByIdForAuthor = async (req, res) => {
+  try {
+
+    const article = await Article.findById(req.params.id)
+
+    if (!article) {
+      return res.status(404).json({
+        success: false,
+        message: "Article not found"
+      })
+    }
+
+    // ownership check
+    if (article.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "You can access only your articles"
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      article
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+
+  }
+}
 
 
 export const editArticle = async (req, res) => {
@@ -76,7 +111,7 @@ export const editArticle = async (req, res) => {
     }
 
     //  Allow edit only for draft or rejected
-    if (!["draft", "rejected"].includes(article.status)) {
+    if (!["draft", "rejected" , "pending"].includes(article.status)) {
       return res.status(400).json({
         success: false,
         message: "Approved or published articles cannot be edited",
@@ -104,7 +139,7 @@ export const editArticle = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: "Server error while editing article",
+      message: error.message,
     });
   }
 };

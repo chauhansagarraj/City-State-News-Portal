@@ -46,11 +46,15 @@ const userSchema = new mongoose.Schema(
     pressCardNumber: String,
     organizationName: String,
     experienceYears: Number,
+    organizationNumber: String,
+    idProofImage: String, // Cloudinary URL
 
     // ================= ADVERTISER FIELDS =================
     companyName: String,
     gstNumber: String,
     companyWebsite: String,
+    idProofImage: String, // Cloudinary URL 
+    
 
     // ================= WALLET =================
 wallet: {

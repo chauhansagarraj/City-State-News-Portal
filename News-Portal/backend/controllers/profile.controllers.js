@@ -52,6 +52,7 @@ export const completeProfile = async (req, res) => {
     }
 
     Object.assign(user, updates);
+    // user.profile = updates;
 
     user.verificationStatus = "pending";
     user.rejectionReason = undefined;
@@ -71,3 +72,47 @@ export const completeProfile = async (req, res) => {
   });
 }
 };  
+
+export const getMyProfile = async (req, res) => {
+  try {
+
+    const user = await User.findById(req.user.id).select(
+      "pressCardNumber organizationName experienceYears governmentIDNumber organizationNumber companyName gstNumber companyWebsite idProofImage"
+    );
+
+    res.status(200).json({
+      success: true,
+      profile: user
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+
+    const user = await User.findById(req.user.id);
+
+    const updates = req.body;
+
+    if (req.file) {
+      updates.idProofImage = req.file.path;
+    }
+
+    // update fields directly
+    Object.assign(user, updates);
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

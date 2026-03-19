@@ -1,4 +1,4 @@
-import  {createArticle , editArticle , submitForApproval , viewArticle}  from "../controllers/articles.controller.js";
+import  {createArticle , editArticle , submitForApproval , viewArticle , getArticleByIdForAuthor}  from "../controllers/articles.controller.js";
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
 import { authorizeRoles } from "../middleware/roleMiddleware.js";
@@ -38,5 +38,14 @@ router.get(
   verifyApprovedUser,
   viewArticle,
 );
+
+router.get(
+  "/articles/:id",
+  protect,
+  authorizeRoles("journalist"),
+  verifyApprovedUser,
+  getArticleByIdForAuthor
+);
+
 
 export { router as journalistRoutes };

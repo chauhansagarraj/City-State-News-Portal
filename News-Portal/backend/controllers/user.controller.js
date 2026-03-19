@@ -1,11 +1,18 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import generateToken from "../utils/generateTokens.js";
+import e from "express";
 
 // ================= REGISTER =================
 export const register = async (req, res) => {
   try {
     const { name, email, password, role, phone, city } = req.body;
+
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({
+        message: "All Fields are required",
+      });
+    }
 
     // Prevent admin self-registration
     if (role === "admin") {
@@ -62,7 +69,7 @@ export const register = async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: error.message || "Server error" });
   }
 };
 

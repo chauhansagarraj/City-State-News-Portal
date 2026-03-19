@@ -45,6 +45,37 @@ export const getAllPublishedArticles = async (req, res) => {
   }
 };
 
+// export const getSingleArticleDetails = async (req, res) => {
+//   try {
+//     const article = await Article.findOne({
+//       _id: req.params.id,
+//       status: "published",
+//     }).populate("author", "name email");
+
+//     if (!article) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Article not found",
+//       });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       article: {
+//         ...article._doc,
+
+//         //  Likes
+//         likesCount: article.likes.length,
+
+//         //  Ratings
+//         averageRating: article.averageRating,
+//         totalRatings: article.ratings.length,
+//       },
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 export const getSingleArticleDetails = async (req, res) => {
   try {
     const article = await Article.findOne({
@@ -59,24 +90,31 @@ export const getSingleArticleDetails = async (req, res) => {
       });
     }
 
+    // Get user rating if logged in
+    let userRating = 0;
+    if (req.user && article.ratings && article.ratings.length > 0) {
+      const ratingObj = article.ratings.find(
+        (r) => r.user.toString() === req.user._id.toString()
+      );
+      userRating = ratingObj ? ratingObj.value : 0;
+    }
+
     res.status(200).json({
       success: true,
       article: {
         ...article._doc,
-
-        //  Likes
+        // Likes
         likesCount: article.likes.length,
-
-        //  Ratings
+        // Ratings
         averageRating: article.averageRating,
         totalRatings: article.ratings.length,
+        userRating, // <-- Add this
       },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 export const searchArticles = async (req, res) => {
   try {
     const query = req.query.q;
