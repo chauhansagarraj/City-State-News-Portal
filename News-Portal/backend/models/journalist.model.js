@@ -95,6 +95,13 @@ const articleSchema = new mongoose.Schema(
       },
     ],
 
+    viewsHistory: [
+  {
+    date: { type: String }, // "2026-03-19"
+    count: { type: Number, default: 0 }
+  }
+],
+
     averageRating: {
       type: Number,
       default: 0,

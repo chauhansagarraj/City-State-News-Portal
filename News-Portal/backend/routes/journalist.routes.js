@@ -34,7 +34,7 @@ router.put(
 router.get(
   "/view/:id",
   protect,
-  authorizeRoles("journalist"),
+  // authorizeRoles("journalist"),
   verifyApprovedUser,
   viewArticle,
 );

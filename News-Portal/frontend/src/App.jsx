@@ -8,7 +8,8 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ProfileComplete from "./pages/ProfileComplete.jsx";
 import CreateArticle from "./pages/CreateArticle.jsx";
 import MyArticles from "./pages/MyArticles.jsx";
-import JournalistDashboard from "./pages/JournalistDashboard.jsx";
+// import JournalistDashboard from "./pages/JournalistDashboard.jsx";
+import JournalistDashboard from "./pages/JournalistDashboardHome.jsx";
 import EditArticle from "./pages/EditArticle.jsx";
 // import ViewArticle from "./pages/ViewArticle.jsx";
 import DashboardLayout from "./components/DashboardLayout.jsx";
@@ -29,7 +30,7 @@ function App() {
         {/* <Route index element={<JournalistDashboard />} /> */}
         <Route path="/articles/create" element={<ProtectedRoute><CreateArticle /></ProtectedRoute>} />
         <Route path="/my-articles" element={<ProtectedRoute><MyArticles /></ProtectedRoute>} />
-        <Route path="/journalist-dashboard" element={<ProtectedRoute><JournalistDashboard /></ProtectedRoute>} />
+        <Route path="/journalistDashboard" element={<ProtectedRoute><JournalistDashboard /></ProtectedRoute>} />
         <Route path="/articles/edit/:id" element={<ProtectedRoute><EditArticle /></ProtectedRoute>} />
         {/* <Route path="/articles/view/:id" element={<ProtectedRoute><ViewArticle /></ProtectedRoute>} /> */}
       </Routes>

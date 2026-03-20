@@ -146,17 +146,17 @@ export const getArticleById = createAsyncThunk(
 
 /* VIEW ARTICLE */
 
-// export const viewArticle = createAsyncThunk(
-//   "articles/view",
-//   async (id, { rejectWithValue }) => {
-//     try {
-//       const res = await API.get(`/journalist/view/${id}`);
-//       return res.data.article;
-//     } catch (err) {
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
+export const viewArticle = createAsyncThunk(
+  "articles/view",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await API.get(`/journalist/view/${id}`);
+      return res.data.article;
+    } catch (err) {
+      return rejectWithValue(err.response?.data);
+    }
+  }
+);
 
 
 
@@ -305,6 +305,18 @@ const articleSlice = createSlice({
   state.loading = false
   state.error = action.payload
 })
+
+.addCase(viewArticle.pending, (state) => {
+  state.loading = true;
+})
+.addCase(viewArticle.fulfilled, (state, action) => {
+  state.loading = false;
+  state.article = action.payload;
+})
+.addCase(viewArticle.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload?.message;
+});
 
   },
 });

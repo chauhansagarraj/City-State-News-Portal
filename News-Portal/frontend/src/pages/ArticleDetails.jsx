@@ -1,7 +1,7 @@
 import { useEffect , useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { toggleLikeArticle } from "../store/slices/articleSlice";
+import { toggleLikeArticle , viewArticle } from "../store/slices/articleSlice";
 import { fetchArticleDetails } from "../store/slices/articleSlice";
 import CommentSection from "../components/commentSection";
 import Header from "../components/Header";
@@ -24,8 +24,17 @@ const [selectedArticle, setSelectedArticle] = useState(null);
     (state) => state.articles
   );
 
-  useEffect(() => {
-    dispatch(fetchArticleDetails(id));
+   useEffect(() => {
+    if (id) {
+      const viewed = sessionStorage.getItem(`viewed-${id}`);
+
+      if (!viewed) {
+        dispatch(viewArticle(id)); //  increase view
+        sessionStorage.setItem(`viewed-${id}`, "true");
+      }
+
+      dispatch(fetchArticleDetails(id)); //  fetch data
+    }
   }, [dispatch, id]);
 
   if (loading) {

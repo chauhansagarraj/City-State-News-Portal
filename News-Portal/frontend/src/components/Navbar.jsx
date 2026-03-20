@@ -178,7 +178,7 @@ const Navbar = () => {
                   My Articles
                 </Link>
                 <Link
-                  to="/journalist-dashboard"
+                  to="/journalistDashboard"
                   className="hover:text-red-400"
                   onClick={() => setMenuOpen(false)}
                 >

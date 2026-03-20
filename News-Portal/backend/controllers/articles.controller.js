@@ -194,22 +194,73 @@ export const submitForApproval = async (req, res) => {
   }
 };
 
+// export const viewArticle = async (req, res) => {
+//   try {
+//     const articleId = req.params.id;
+
+//     const article = await Article.findOneAndUpdate(
+//       { _id: articleId, status: "published" },
+//       { $inc: { views: 1 } },
+//       { new: true }
+//     ).populate("author", "name");
+
+//     if (!article) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Article not found or not published",
+//       });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       article,
+//     });
+
+//   } catch (error) {
+//     console.error("View Article Error:", error);
+
+//     res.status(500).json({
+//       success: false,
+//       message: "Server error",
+//     });
+//   }
+// };
+
 export const viewArticle = async (req, res) => {
   try {
     const articleId = req.params.id;
 
-    const article = await Article.findOneAndUpdate(
-      { _id: articleId, status: "published" },
-      { $inc: { views: 1 } },
-      { new: true }
-    ).populate("author", "name");
+    const article = await Article.findById(articleId);
 
-    if (!article) {
+    if (!article || article.status !== "published") {
       return res.status(404).json({
         success: false,
         message: "Article not found or not published",
       });
     }
+
+    // ✅ Increase total views
+    article.views += 1;
+
+    // ✅ Track daily views
+    const today = new Date().toISOString().split("T")[0];
+
+    const existing = article.viewsHistory.find(
+      (v) => v.date === today
+    );
+
+    if (existing) {
+      existing.count += 1;
+    } else {
+      article.viewsHistory.push({
+        date: today,
+        count: 1,
+      });
+    }
+
+    await article.save();
+
+    await article.populate("author", "name");
 
     res.status(200).json({
       success: true,

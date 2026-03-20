@@ -13,7 +13,7 @@ Journalist Panel
 <div className="flex flex-col gap-4">
 
 <Link
-to="/journalist-dashboard"
+to="/journalistDashboard"
 className="hover:text-yellow-400"
 >
 Dashboard
