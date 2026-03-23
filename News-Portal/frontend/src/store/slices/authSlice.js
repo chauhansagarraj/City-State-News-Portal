@@ -122,8 +122,17 @@ const authSlice = createSlice({
       // CHANGE PASSWORD
       .addCase(changePassword.fulfilled, (state) => {
         state.loading = false;
+        state.message = "Password changed successfully";
+      })
+
+      .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
-  },
+
+    }
+     
+    
 });
 
 export const { logout } = authSlice.actions;

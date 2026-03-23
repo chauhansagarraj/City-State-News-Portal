@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Article from "./journalist.model.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -99,6 +100,14 @@ wallet: {
     },
 
     rejectionReason: String,
+
+     savedArticles: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Article",
+  }
+],
+
 
     // ================= EMAIL VERIFICATION =================
     isEmailVerified: {

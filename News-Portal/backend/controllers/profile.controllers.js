@@ -77,7 +77,7 @@ export const getMyProfile = async (req, res) => {
   try {
 
     const user = await User.findById(req.user.id).select(
-      "pressCardNumber organizationName experienceYears governmentIDNumber organizationNumber companyName gstNumber companyWebsite idProofImage"
+      "name email city state pressCardNumber organizationName experienceYears governmentIDNumber organizationNumber companyName gstNumber companyWebsite idProofImage"
     );
 
     res.status(200).json({

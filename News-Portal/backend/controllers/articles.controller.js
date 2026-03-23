@@ -3,7 +3,9 @@ import Article from "../models/journalist.model.js";
 
 export const createArticle = async (req, res) => {
   try {
-    const { title, content, category, images , state , city  } = req.body;
+    const { title, content, category , state , city  } = req.body;
+
+     const imagePaths = req.files.map(file => file.path);
 
     //  Validation
     if (!title || !content || !category) {
@@ -22,7 +24,7 @@ export const createArticle = async (req, res) => {
       category,
         // state,
         // city,
-      images: images || [],
+      images: imagePaths || [],
       author: authorId,
       status: "draft",
     });
@@ -92,6 +94,7 @@ export const editArticle = async (req, res) => {
       images,
     } = req.body;
 
+
     //  Find article
     const article = await Article.findById(articleId);
 
@@ -101,7 +104,7 @@ export const editArticle = async (req, res) => {
         message: "Article not found",
       });
     }
-
+const newImages = req.files.map(file => file.path);
     //  Check ownership
     if (article.author.toString() !== req.user._id.toString()) {
       return res.status(403).json({
@@ -124,7 +127,9 @@ export const editArticle = async (req, res) => {
     article.category = category || article.category;
     article.state = state || article.state;
     article.city = city || article.city;
-    article.images = images || article.images;
+     if (newImages.length > 0) {
+      article.images = newImages;
+    }
 
     const updatedArticle = await article.save();
 
@@ -276,3 +281,4 @@ export const viewArticle = async (req, res) => {
     });
   }
 };
+

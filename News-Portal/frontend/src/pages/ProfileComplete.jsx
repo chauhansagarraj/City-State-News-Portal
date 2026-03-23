@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import API from "../services/axios";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
-
+import { Navigate } from "react-router-dom";
 const ProfileCompletion = () => {
   const { user } = useSelector((state) => state.auth);
 
@@ -83,7 +83,9 @@ const ProfileCompletion = () => {
 
     setLoading(false);
   };
-
+if (user?.role === "reader") {
+  return <Navigate to="/reader/profile" />
+}
   return (
     <>
       <Header />
@@ -94,8 +96,10 @@ const ProfileCompletion = () => {
         <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
 
           <h2 className="text-2xl font-bold mb-4 text-center">
+
+            
           
-            {user.role === "journalist" || user.role === "advertiser" 
+            {user.role === "journalist" 
               ? "Journalist Profile"
               : "Advertiser Profile"}
           </h2>

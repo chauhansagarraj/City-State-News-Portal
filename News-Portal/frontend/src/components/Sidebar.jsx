@@ -33,6 +33,12 @@ className="hover:text-yellow-400"
 My Articles
 </Link>
 <Link
+to="/auth/changePassword"
+className="hover:text-yellow-400"
+>
+Change Password
+</Link>
+<Link
 to="/"
 className="hover:text-yellow-400"
 >

@@ -143,16 +143,24 @@ const Navbar = () => {
         </button>
 
           <div className="flex flex-col gap-6 text-1.5xl">
-            {/* <Link
+            <Link
               to="/profile/complete"
               className="hover:text-red-400"
               onClick={() => setMenuOpen(false)}
             >
               Profile
-            </Link> */}
+            </Link>
+ <Link
+                to="/auth/changePassword"
+                className="hover:text-red-400"
+                onClick={() => setMenuOpen(false)}
+              >
+              Change Password
+            </Link>
+
             {loggedInUser.role === "reader" && (
               <Link
-                to="/dashboard"
+                to="/reader"
                 className="hover:text-red-400"
                 onClick={() => setMenuOpen(false)}
               >

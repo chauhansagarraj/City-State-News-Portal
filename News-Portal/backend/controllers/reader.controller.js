@@ -1,4 +1,5 @@
 import Article from "../models/journalist.model.js";
+import User from "../models/user.model.js";
 
 export const getAllPublishedArticles = async (req, res) => {
   try {
@@ -194,6 +195,38 @@ export const filterArticles = async (req, res) => {
       totalResults: formatted.length,
       articles: formatted,
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const toggleBookmark = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { articleId } = req.body;
+
+    const user = await User.findById(userId);
+
+    const isSaved = user.savedArticles.includes(articleId);
+
+    if (isSaved) {
+      // Remove bookmark
+      user.savedArticles = user.savedArticles.filter(
+        (id) => id.toString() !== articleId
+      );
+    } else {
+      // Add bookmark
+      user.savedArticles.push(articleId);
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: isSaved ? "Removed from bookmarks" : "Saved successfully",
+      savedArticles: user.savedArticles,
+    });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

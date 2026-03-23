@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/login.jsx";
+import Login from "./pages/Login.jsx";
 import Register from "./pages/register.jsx";
 import Home from "./pages/Home.jsx";
 import ArticleDetails from "./pages/ArticleDetails.jsx";
@@ -13,6 +13,10 @@ import JournalistDashboard from "./pages/JournalistDashboardHome.jsx";
 import EditArticle from "./pages/EditArticle.jsx";
 // import ViewArticle from "./pages/ViewArticle.jsx";
 import DashboardLayout from "./components/DashboardLayout.jsx";
+import ChangePassword from "./pages/ChangePassword.jsx";
+import ReaderDashboardLayout from "./components/ReaderDashboardLayout.jsx";
+import ReaderHome from "./pages/ReaderDashboardHome.jsx";
+import Profile from "./pages/ProfileReader.jsx";
 function App() {
 
   return (
@@ -32,7 +36,16 @@ function App() {
         <Route path="/my-articles" element={<ProtectedRoute><MyArticles /></ProtectedRoute>} />
         <Route path="/journalistDashboard" element={<ProtectedRoute><JournalistDashboard /></ProtectedRoute>} />
         <Route path="/articles/edit/:id" element={<ProtectedRoute><EditArticle /></ProtectedRoute>} />
+        <Route path="/auth/changePassword" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
         {/* <Route path="/articles/view/:id" element={<ProtectedRoute><ViewArticle /></ProtectedRoute>} /> */}
+        <Route
+    path="/reader"
+    element={<ProtectedRoute><ReaderDashboardLayout /></ProtectedRoute>}
+  >
+    <Route index element={<ReaderHome />} />
+    <Route path="profile" element={<Profile />} />
+    <Route path="change-password" element={<ChangePassword />} />
+  </Route>
       </Routes>
 
     </BrowserRouter>

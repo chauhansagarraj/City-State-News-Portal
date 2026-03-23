@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Rating from "../components/RatingsSection";
+import BookmarkButton from "../components/BookMarkButton";
 import { current } from "@reduxjs/toolkit";
 
 const ArticleDetails = () => {  
@@ -123,6 +124,8 @@ const [selectedArticle, setSelectedArticle] = useState(null);
 >
   Read & Post Comments
 </button>
+
+  <BookmarkButton articleId={article._id} user={loggedInUser} />
 
 </div>
 

@@ -183,7 +183,7 @@ export const addReply = async (req, res) => {
       });
     }
 
-    const reply = await Comment.create({
+    let reply = await Comment.create({
       article: articleId,
       user: req.user._id,
       content,

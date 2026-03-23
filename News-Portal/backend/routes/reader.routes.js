@@ -4,7 +4,9 @@ import {
   getSingleArticleDetails,
   searchArticles,
   filterArticles,
+  toggleBookmark
 } from "../controllers/reader.controller.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -19,5 +21,9 @@ router.get("/search", searchArticles);
 
 // Filter by category / city / state
 router.get("/filter", filterArticles);
+
+// Toggle bookmark
+router.post("/bookmark/toggle", protect, toggleBookmark);
+
 
 export default router;
