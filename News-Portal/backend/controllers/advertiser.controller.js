@@ -3,6 +3,13 @@ import User from "../models/user.model.js";
 
 export const createCampaign = async (req, res) => {
   try {
+        const user = await User.findById(req.user.id);
+
+    if (user.wallet.balance <= 0) {
+      return res.status(400).json({
+        message: "Please add funds before creating campaign",
+      });
+    }
     const campaign = await Campaign.create({
       ...req.body,
       schedule: {
@@ -25,7 +32,8 @@ export const createCampaign = async (req, res) => {
 export const getMyCampaigns = async (req, res) => {
   const campaigns = await Campaign.find({
     advertiser: req.user.id,
-  }).sort({ createdAt: -1 });
+  }).populate("advertiser", "wallet")
+  .sort({ createdAt: -1 });
 
   res.json(campaigns);
 };
@@ -39,7 +47,7 @@ export const getCampaignById = async (req, res) => {
   if (!campaign)
     return res.status(404).json({ message: "Campaign not found" });
 
-  res.json(campaign);
+  res.json({campaign ,  wallet: campaigns[0]?.advertiser?.wallet || { balance: 0 }});
 };
 
 export const updateCampaign = async (req, res) => {
@@ -86,7 +94,7 @@ export const deleteCampaign = async (req, res) => {
 
   await campaign.deleteOne();
 
-  res.json({ message: "Campaign deleted" });
+  res.json({ message: "Campaign deleted"  ,  id: req.params.id });
 };
 
 export const submitCampaign = async (req, res) => {
@@ -122,7 +130,7 @@ export const pauseCampaign = async (req, res) => {
   campaign.status = "paused";
   await campaign.save();
 
-  res.json({ message: "Campaign paused" });
+  res.json({ message: "Campaign paused" , campaign });
 };
 
 export const resumeCampaign = async (req, res) => {
@@ -134,10 +142,16 @@ export const resumeCampaign = async (req, res) => {
   if (!campaign)
     return res.status(404).json({ message: "Campaign not found" });
 
+  if (campaign.budget.spent >= campaign.budget.total) {
+  return res.status(400).json({
+    message: "Cannot resume. Budget exhausted",
+  });
+}
+
   campaign.status = "active";
   await campaign.save();
 
-  res.json({ message: "Campaign resumed" });
+  res.json({ message: "Campaign resumed" , campaign });
 };
 
 
@@ -153,10 +167,10 @@ export const trackImpression = async (req, res) => {
     if (campaign.status !== "active")
       return res.status(400).json({ message: "Campaign not active" });
 
-    const advertiser = campaign.advertiser;
+    const advertiser = await User.findById(campaign.advertiser._id);
     const userIP = req.ip;
     const now = new Date();
-    const cooldown = 2 * 60 * 1000; // 2 minutes
+    const cooldown = 20 * 60 * 1000; // 20 minutes
 
     // 🔒 Duplicate prevention
     const recentImpression = campaign.analytics.lastImpressions.find(
@@ -172,7 +186,7 @@ export const trackImpression = async (req, res) => {
     const cost = campaign.budget.costPerImpression;
 
     //  Check wallet balance
-    if (advertiser.wallet.balance < cost) {
+    if(advertiser.wallet.balance < cost && campaign.status === "active") {
       campaign.status = "paused";
       await campaign.save();
 
@@ -246,12 +260,12 @@ export const trackClick = async (req, res) => {
     if (campaign.status !== "active")
       return res.status(400).json({ message: "Campaign not active" });
 
-    const advertiser = campaign.advertiser;
+    const advertiser = await User.findById(campaign.advertiser._id);
     const cost = campaign.budget.costPerClick;
 
     const userIP = req.ip;
     const now = new Date();
-    const cooldown = 2 * 60 * 1000;
+    const cooldown = 20 * 60 * 1000;
 
     //  Duplicate prevention
     const recentClick = campaign.analytics.lastClicks.find(
@@ -267,7 +281,7 @@ export const trackClick = async (req, res) => {
     }
 
     //  Wallet check
-    if (advertiser.wallet.balance < cost) {
+    if (advertiser.wallet.balance < cost && campaign.status === "active") {
       campaign.status = "paused";
       await campaign.save();
 
@@ -355,5 +369,171 @@ export const addFunds = async (req, res) => {
 
   } catch (err) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getActiveAds = async (req, res) => {
+  try {
+    const ads = await Campaign.find({
+      status: "active",
+    }).select("_id title description redirectUrl budget analytics"); 
+    // ✅ only required fields
+
+    res.json(ads);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getWallet = async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  res.json({
+    balance: user.wallet.balance,
+  });
+};
+
+// export const getSingleCampaignAnalytics = async (req, res) => {
+//   try {
+//     const campaign = await Campaign.findById(req.params.id);
+
+//     if (!campaign) {
+//       return res.status(404).json({ message: "Campaign not found" });
+//     }
+
+//     // 📊 Monthly aggregation
+//     const monthlyMap = {};
+
+//     // 🟢 Process clicks
+//     campaign.analytics.lastClicks.forEach((c) => {
+//       const month = new Date(c.time).toLocaleString("default", {
+//         month: "short",
+//       });
+
+//       if (!monthlyMap[month]) {
+//         monthlyMap[month] = { month, clicks: 0, impressions: 0 };
+//       }
+
+//       monthlyMap[month].clicks += 1;
+//     });
+
+//     // 🔵 Process impressions
+//     campaign.analytics.lastImpressions.forEach((i) => {
+//       const month = new Date(i.time).toLocaleString("default", {
+//         month: "short",
+//       });
+
+//       if (!monthlyMap[month]) {
+//         monthlyMap[month] = { month, clicks: 0, impressions: 0 };
+//       }
+
+//       monthlyMap[month].impressions += 1;
+//     });
+
+//     const monthlyData = Object.values(monthlyMap);
+
+//     res.json({
+//       title: campaign.title,
+//       clicks: campaign.analytics.clicks,
+//       impressions: campaign.analytics.impressions,
+//       spent: campaign.budget.spent,
+//       monthlyData,
+//       lastClicks: campaign.analytics.lastClicks,
+//     });
+
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
+
+export const getSingleCampaignAnalytics = async (req, res) => {
+  try {
+    const campaign = await Campaign.findById(req.params.id);
+
+    if (!campaign) {
+      return res.status(404).json({ message: "Campaign not found" });
+    }
+
+    const clicks = campaign.analytics.clicks || 0;
+    const impressions = campaign.analytics.impressions || 0;
+    const spent = campaign.budget.spent || 0;
+
+    // 🔥 Advanced Metrics
+    const ctr =
+      impressions > 0 ? ((clicks / impressions) * 100).toFixed(2) : 0;
+
+    const cpc = clicks > 0 ? (spent / clicks).toFixed(2) : 0;
+
+    // const revenue = campaign.revenue || 0;
+    const revenue = clicks * 10;
+    const roi =
+      spent > 0
+        ? (((revenue - spent) / spent) * 100).toFixed(2)
+        : 0;
+
+    // 📊 Monthly aggregation
+    const monthlyMap = {};
+    const cpcValue = clicks > 0 ? spent / clicks : 0; // for monthly spent
+
+    // 🟢 Process clicks
+    campaign.analytics.lastClicks.forEach((c) => {
+      const month = new Date(c.time).toLocaleString("default", {
+        month: "short",
+      });
+
+      if (!monthlyMap[month]) {
+        monthlyMap[month] = {
+          month,
+          clicks: 0,
+          impressions: 0,
+          spent: 0,
+        };
+      }
+
+      monthlyMap[month].clicks += 1;
+      monthlyMap[month].spent += cpcValue; // 🔥 add spent
+    });
+
+    // 🔵 Process impressions
+    campaign.analytics.lastImpressions.forEach((i) => {
+      const month = new Date(i.time).toLocaleString("default", {
+        month: "short",
+      });
+
+      if (!monthlyMap[month]) {
+        monthlyMap[month] = {
+          month,
+          clicks: 0,
+          impressions: 0,
+          spent: 0,
+        };
+      }
+
+      monthlyMap[month].impressions += 1;
+    });
+
+    const monthlyData = Object.values(monthlyMap);
+
+    // ✅ Final Response
+    res.json({
+      title: campaign.title,
+
+      // 🔹 Overall stats
+      clicks,
+      impressions,
+      spent,
+      ctr,
+      cpc,
+      roi,
+
+      // 🔹 Chart data
+      monthlyData,
+
+      // 🔹 Activity logs
+      lastClicks: campaign.analytics.lastClicks,
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

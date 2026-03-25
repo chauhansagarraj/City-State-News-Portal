@@ -13,6 +13,20 @@ export const getAdvertiserDashboard = async (req, res) => {
       (c) => c.status === "active"
     ).length;
 
+    const statusCounts = {
+  active: 0,
+  paused: 0,
+  pending: 0,
+  draft: 0,
+  completed: 0,
+};
+
+campaigns.forEach((c) => {
+  if (statusCounts[c.status] !== undefined) {
+    statusCounts[c.status]++;
+  }
+});
+
     const totalClicks = campaigns.reduce(
       (sum, c) => sum + (c.analytics?.clicks || 0),
       0
@@ -24,9 +38,26 @@ export const getAdvertiserDashboard = async (req, res) => {
     );
 
     const totalSpent = campaigns.reduce(
-      (sum, c) => sum + (c.analytics?.clicks || 0),
+      (sum, c) => sum + (c.budget?.spent || 0),
       0
     );
+    // 🔥 Total Revenue
+// const totalRevenue = campaigns.reduce(
+//   (sum, c) =>
+//     sum +
+//     (c.analytics?.clicks || 0) * (c.budget.costPerClick || 0),
+//   0
+// );
+
+// const totalProfit = totalRevenue - totalSpent;
+
+const overallCPC =
+  totalClicks > 0 ? (totalSpent / totalClicks).toFixed(2) : 0;
+
+// const overallROI =
+//   totalSpent > 0
+//     ? ((totalProfit / totalSpent) * 100).toFixed(2)
+//     : 0;
 
     const advertiser = await User.findById(advertiserId);
 
@@ -37,6 +68,11 @@ export const getAdvertiserDashboard = async (req, res) => {
       totalImpressions,
       totalSpent,
       walletBalance: advertiser.wallet?.balance || 0,
+      statusCounts,
+      overallCPC,
+      // totalRevenue,
+      // totalProfit,
+      // overallROI,
     });
 
   } catch (err) {

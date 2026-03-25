@@ -5,6 +5,9 @@ import commentReducer from "./slices/commentSlice";
 import ratingReducer from "./slices/ratingsSlice";
 import dashboardSlice from "./slices/dashboardSlice";
 import readerSlice from "./slices/readerSlice";
+import advertiserSlice from "./slices/advertiserSlice";
+import adSlice from "./slices/adSlice";
+import advertiserDashboardSlice from "./slices/advertiserDashboardSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +16,9 @@ export const store = configureStore({
     comments : commentReducer,
     ratings: ratingReducer,
     dashboard: dashboardSlice,
-    reader: readerSlice
+    reader: readerSlice,
+    advertiser: advertiserSlice,
+    ads: adSlice,
+    advertiserDashboard: advertiserDashboardSlice,
   },
 });

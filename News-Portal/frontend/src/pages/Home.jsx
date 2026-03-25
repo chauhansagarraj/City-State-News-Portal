@@ -8,17 +8,21 @@ import BreakingNews from "../components/BreakingNews";
 import NewsCard from "../components/NewsCard";
 import Footer from "../components/Footer";
 import CategoryFilter from "../components/CategoryFilter";
+import AdCard from "../components/AdCard";
+import { getActiveAds } from "../store/slices/adSlice";
 
 const Home = () => {
 
   const dispatch = useDispatch();
 
-  const { articles, loading, error , allArticles  } = useSelector(
+  const { articles, loading, error, allArticles } = useSelector(
     (state) => state.articles
   );
+  const { ads } = useSelector((state) => state.ads);
 
   useEffect(() => {
     dispatch(fetchArticles());
+    dispatch(getActiveAds());
   }, [dispatch]);
 
   // BREAKING NEWS (latest)
@@ -54,13 +58,18 @@ const Home = () => {
 
           {loading && <p>Loading...</p>}
           {error && <p className="text-red-500">{error}</p>}
-
           <div className="grid gap-6">
-            {articles.map((article) => (
-              <NewsCard
-                key={article._id}
-                article={article}
-              />
+            {articles.map((article, index) => (
+              <div key={article._id}>
+
+                <NewsCard article={article} />
+
+                {/* ✅ SHOW AD AFTER EVERY 2 ARTICLES (MAX 2 ADS) */}
+                {index % 2 === 1 && index < 4 && ads.length > 0 && (
+                  <AdCard ad={ads[index % ads.length]} />
+                )}
+
+              </div>
             ))}
           </div>
 

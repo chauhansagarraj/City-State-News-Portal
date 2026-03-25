@@ -64,6 +64,17 @@ useEffect(() => {
 dispatch(clearArticleState())   }, [dispatch])
 }
 
+// useEffect(() => {
+//   if (message || error) {
+//     const timer = setTimeout(() => {
+//       setMessage("")
+//       setError("")
+//     }, 3000)
+
+//     return () => clearTimeout(timer)
+//   }
+// }, [message, error])
+
 return (
 
 <div className="max-w-3xl mx-auto p-6">

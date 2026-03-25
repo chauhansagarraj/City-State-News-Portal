@@ -17,6 +17,11 @@ import ChangePassword from "./pages/ChangePassword.jsx";
 import ReaderDashboardLayout from "./components/ReaderDashboardLayout.jsx";
 import ReaderHome from "./pages/ReaderDashboardHome.jsx";
 import Profile from "./pages/ProfileReader.jsx";
+import CreateCampaign from "./pages/CreateCampaign.jsx";
+import MyCampaigns from "./pages/MyCampaigns.jsx";
+import AdvertiserDashboardLayout from "./components/AdvertiserDashboardLayout.jsx";
+import AdvertiserDashboardHome from "./pages/AdvertiserDashboardHome.jsx";
+import SingleCampaignAnalytics from "./components/SingleCampaignAnalytics.jsx";
 function App() {
 
   return (
@@ -39,14 +44,24 @@ function App() {
         <Route path="/auth/changePassword" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
         {/* <Route path="/articles/view/:id" element={<ProtectedRoute><ViewArticle /></ProtectedRoute>} /> */}
         <Route
-    path="/reader"
-    element={<ProtectedRoute><ReaderDashboardLayout /></ProtectedRoute>}
-  >
-    <Route index element={<ReaderHome />} />
-    <Route path="profile" element={<Profile />} />
-    <Route path="change-password" element={<ChangePassword />} />
-  </Route>
+          path="/reader"
+          element={<ProtectedRoute><ReaderDashboardLayout /></ProtectedRoute>}
+        >
+          <Route index element={<ReaderHome />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="change-password" element={<ChangePassword />} />
+        </Route>
+        <Route
+          path="/advertiser"
+          element={<ProtectedRoute><AdvertiserDashboardLayout /></ProtectedRoute>}
+        >
+          <Route index element={<AdvertiserDashboardHome />} />
+          <Route path="campaign/create" element={<ProtectedRoute><CreateCampaign /></ProtectedRoute>} />
+          <Route path="campaign/my" element={<ProtectedRoute><MyCampaigns /></ProtectedRoute>} />
+          <Route path="campaign-analytics/:id" element={<ProtectedRoute><SingleCampaignAnalytics /></ProtectedRoute>} />
+        </Route>
       </Routes>
+
 
     </BrowserRouter>
   );

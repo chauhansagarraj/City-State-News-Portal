@@ -10,7 +10,10 @@ import {
   resumeCampaign,
   trackImpression,
   trackClick,
-  addFunds
+  addFunds,
+  getActiveAds,
+  getWallet,
+  getSingleCampaignAnalytics
 } from "../controllers/advertiser.controller.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { authorizeRoles } from "../middleware/roleMiddleware.js";
@@ -26,8 +29,11 @@ router.delete("/delete/:id", protect,authorizeRoles("advertiser"),verifyApproved
 router.post("/submit/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, submitCampaign);
 router.put("/pause/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, pauseCampaign);
 router.put("/resume/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, resumeCampaign);
-router.post("/track/impression/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, trackImpression);
-router.post("/track/click/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, trackClick);
+router.post("/track/impression/:id", trackImpression);
+router.post("/track/click/:id", trackClick);
 router.post("/add-funds", protect,authorizeRoles("advertiser"),verifyApprovedUser, addFunds);
+router.get("/wallet", protect,authorizeRoles("advertiser"),verifyApprovedUser, getWallet);
+router.get("/campaign-analytics/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, getSingleCampaignAnalytics);
+router.get("/active-ads", getActiveAds);
 
 export default router;

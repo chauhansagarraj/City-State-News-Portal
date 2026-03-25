@@ -199,21 +199,21 @@ const Navbar = () => {
             {loggedInUser.role === "advertiser" && (
               <>
                 <Link
-                  to="/create-campaign"
+                  to="/advertiser/campaign/create"
                   className="hover:text-red-400"
                   onClick={() => setMenuOpen(false)}
                 >
                   Create Campaign
                 </Link>
                 <Link
-                  to="/my-campaigns"
+                  to="/advertiser/campaign/my"
                   className="hover:text-red-400"
                   onClick={() => setMenuOpen(false)}
                 >
                   My Campaigns
                 </Link>
                  <Link
-                  to="/my-campaings"
+                  to="/advertiser"
                   className="hover:text-red-400"
                   onClick={() => setMenuOpen(false)}
                 >

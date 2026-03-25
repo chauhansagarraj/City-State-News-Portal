@@ -37,7 +37,7 @@ const campaignSchema = new mongoose.Schema(
         "article_bottom",
         "footer",
       ],
-      required: true,
+      // required: true,
     },
 
     target: {
@@ -70,7 +70,12 @@ const campaignSchema = new mongoose.Schema(
       ],
       default: "draft",
     },
-
+    redirectUrl: {
+  type: String,
+  required: true,
+  match: /^https?:\/\/.+/,
+},
+revenue: { type: Number, default: 0 },
 
     analytics: {
       impressions: { type: Number, default: 0 },
