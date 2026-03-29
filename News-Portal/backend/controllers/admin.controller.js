@@ -70,6 +70,7 @@ export const blockUser = async (req, res) => {
     if (!user)
       return res.status(404).json({ message: "User not found" });
 
+    user.verificationStatus = "blocked";
     user.status = "blocked";
 
     await user.save();
@@ -77,7 +78,7 @@ export const blockUser = async (req, res) => {
     res.json({ message: "User blocked successfully" });
 
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -89,7 +90,7 @@ export const unblockUser = async (req, res) => {
 
     if (!user)
       return res.status(404).json({ message: "User not found" });
-
+    user.verificationStatus = "approved";
     user.status = "active";
 
     await user.save();
@@ -113,7 +114,31 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+export const getSingleUserDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    res.json(user);    
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
+export const getAllArticles = async (req, res) => {
+  try {
+    const articles = await Article.find()
+      .populate("author", "name email");
+
+    res.status(200).json({
+      success: true,
+      articles,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
 export const getPendingArticles = async (req, res) => {
   try {
     const articles = await Article.find({ status: "pending" })
@@ -271,7 +296,7 @@ export const approveCampaign = async (req, res) => {
   if (!campaign)
     return res.status(404).json({ message: "Campaign not found" });
 
-  campaign.status = "approved";
+  campaign.status = "active";
 
   await campaign.save();
 
@@ -300,4 +325,75 @@ export const getAllCampaigns = async (req, res) => {
     .sort({ createdAt: -1 });
 
   res.json(campaigns);
+};
+
+export const getAllCampaignRevenue = async (req, res) => {
+  try {
+    const campaigns = await Campaign.find();
+
+    const result = campaigns.map((campaign) => {
+      const clicks = campaign.analytics?.clicks || 0;
+      const impressions = campaign.analytics?.impressions || 0;
+
+      const costPerClick = campaign.budget?.costPerClick || 0;
+      const costPerImpression = campaign.budget?.costPerImpression || 0;
+
+      // ✅ Correct Revenue Formula
+      const revenue =
+        clicks * costPerClick +
+        impressions * costPerImpression;
+
+      return {
+        _id: campaign._id,
+        title: campaign.title,
+        clicks,
+        impressions,
+        costPerClick,
+        costPerImpression,
+        revenue,
+        spent: campaign.budget?.spent || 0,
+        status: campaign.status,
+      };
+    });
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getTopCampaignsByRevenue = async (req, res) => {
+  try {
+    const campaigns = await Campaign.find();
+
+    const result = campaigns.map((campaign) => {
+      const clicks = campaign.analytics?.clicks || 0;
+      const impressions = campaign.analytics?.impressions || 0;
+
+      const costPerClick =
+        campaign.budget?.costPerClick ?? campaign.cpc ?? 0;
+
+      const costPerImpression =
+        campaign.budget?.costPerImpression ?? campaign.cpi ?? 0;
+
+      const revenue =
+        clicks * costPerClick +
+        impressions * costPerImpression;
+
+      return {
+        _id: campaign._id,
+        title: campaign.title,
+        revenue,
+      };
+    });
+
+    // 🔥 Sort descending by revenue
+    const topCampaigns = result
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 5); // top 5
+
+    res.json(topCampaigns);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };

@@ -124,10 +124,11 @@ className="border p-3 rounded w-full"
 
 <option value="">Select State</option>
 
-{Object.keys(statesAndCities).map((state)=>(
-  <option key={state} value={state}>
-    {state}
-  </option>
+{statesAndCities &&
+  Object.keys(statesAndCities).map((state) => (
+    <option key={state} value={state}>
+      {state}
+    </option>
 ))}
 
 </select>
@@ -145,7 +146,7 @@ disabled={!form.state}
 <option value="">Select City</option>
 
 {form.state &&
- statesAndCities[form.state].map((city)=>(
+ statesAndCities?.[form.state]?.map((city) => (
    <option key={city} value={city}>
      {city}
    </option>

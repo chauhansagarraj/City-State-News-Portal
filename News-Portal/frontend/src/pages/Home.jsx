@@ -1,18 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArticles } from "../store/slices/articleSlice";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import TrendingNews from "../components/TrendingNews";
-import BreakingNews from "../components/BreakingNews";
 import NewsCard from "../components/NewsCard";
 import Footer from "../components/Footer";
 import CategoryFilter from "../components/CategoryFilter";
 import AdCard from "../components/AdCard";
+import HeadlineTicker from "../components/Headline";
 import { getActiveAds } from "../store/slices/adSlice";
-
+// import ArticleListCard from "../components/ArticleListCard";
 const Home = () => {
-
+const [currentPage, setCurrentPage] = useState(1);
+const articlesPerPage = 6;
   const dispatch = useDispatch();
 
   const { articles, loading, error, allArticles } = useSelector(
@@ -25,59 +26,104 @@ const Home = () => {
     dispatch(getActiveAds());
   }, [dispatch]);
 
-  // BREAKING NEWS (latest)
-  const breakingNews = [...allArticles]
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 5);
-
-  // TRENDING NEWS (most viewed)
+  // 🔥 TRENDING NEWS (RIGHT SIDE)
   const trendingNews = [...allArticles]
     .sort((a, b) => b.views - a.views)
-    .slice(0, 5);
-
+    .slice(0, 20);
+const indexOfLast = currentPage * articlesPerPage;
+const indexOfFirst = indexOfLast - articlesPerPage;
+const currentArticles = articles.slice(indexOfFirst, indexOfLast);
+const totalPages = Math.ceil(articles.length / 6);
   return (
     <>
       <Header />
       <Navbar />
+      <HeadlineTicker/>
 
       <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-12 gap-6">
 
-        {/* Trending Sidebar */}
-        <div className="col-span-12 md:col-span-3">
-          <TrendingNews articles={trendingNews} />
-        </div>
+        {/* 📰 LEFT - LATEST NEWS (BIGGER AREA) */}
+        <div className="col-span-12 lg:col-span-9">
 
-        {/* Latest News */}
-        <div className="col-span-12 md:col-span-6">
 
+{ads.length > 0 && (
+  <div className="mb-6">
+    <AdCard ad={ads[0]} />
+  </div>
+)}
           <h2 className="text-2xl font-bold mb-6">
             Latest News
           </h2>
+          {/* ADVERTISEMENT BELOW NAVBAR */}
 
-          <CategoryFilter />
+          {/* Filter */}
+          <div className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-100">
+            <CategoryFilter />
+          </div>
 
           {loading && <p>Loading...</p>}
           {error && <p className="text-red-500">{error}</p>}
-          <div className="grid gap-6">
-            {articles.map((article, index) => (
+
+          {/* 🔥 GRID CARDS */}
+          <div className="grid sm:grid-cols-2 gap-6">
+
+          {currentArticles.map((article, index) => (
               <div key={article._id}>
 
                 <NewsCard article={article} />
 
-                {/* ✅ SHOW AD AFTER EVERY 2 ARTICLES (MAX 2 ADS) */}
-                {index % 2 === 1 && index < 4 && ads.length > 0 && (
+                {/* ✅ ADS AFTER EVERY 2 ARTICLES */}
+                {/* {index % 2 === 1 && index < 4 && ads.length > 0 && (
                   <AdCard ad={ads[index % ads.length]} />
-                )}
+                )} */}
 
               </div>
             ))}
+            </div>
+           <div className="flex justify-center gap-2 mt-8 flex-wrap">
+
+  {/* Prev */}
+  <button
+    onClick={() => setCurrentPage(prev => prev - 1)}
+    disabled={currentPage === 1}
+    className="px-3 py-1 bg-gray-200 rounded"
+  >
+    Prev
+  </button>
+
+  {/* Page Numbers */}
+  {[...Array(totalPages)].map((_, i) => (
+    <button
+      key={i}
+      onClick={() => setCurrentPage(i + 1)}
+      className={`px-3 py-1 rounded ${
+        currentPage === i + 1
+          ? "bg-blue-500 text-white"
+          : "bg-gray-200"
+      }`}
+    >
+      {i + 1}
+    </button>
+  ))}
+
+  {/* Next */}
+  <button
+    onClick={() => setCurrentPage(prev => prev + 1)}
+    disabled={currentPage === totalPages}
+    className="px-3 py-1 bg-gray-200 rounded"
+  >
+    Next
+  </button>
+
+
+
           </div>
 
         </div>
 
-        {/* Breaking Sidebar */}
-        <div className="col-span-12 md:col-span-3">
-          <BreakingNews articles={breakingNews} />
+        {/* 🔥 RIGHT - TRENDING SIDEBAR */}
+        <div className="col-span-12 lg:col-span-3">
+          <TrendingNews articles={trendingNews} />
         </div>
 
       </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState  } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import "../assets/myCampaign.css";
 import {
     getMyCampaigns,
     deleteCampaign,
@@ -17,6 +18,7 @@ const MyCampaigns = () => {
 
     const [editCampaign, setEditCampaign] = useState(null);
         const [showAddFunds, setShowAddFunds] = useState(false);
+        const [showReasonModal, setShowReasonModal] = useState(null);
     const [amount, setAmount] = useState("");
     const dispatch = useDispatch();
     const { campaigns, loading, message, error, walletBalance } = useSelector((state) => state.advertiser);
@@ -89,35 +91,81 @@ const navigate = useNavigate();
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 {campaigns.map((c) => (
-                  <div
+                 <div
   key={c._id}
-  className="bg-white p-5 rounded-2xl shadow hover:shadow-xl transition"
+  className="group bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl p-5 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
 >
-  <div className="flex justify-between items-center">
-    <h2 className="text-lg font-semibold">{c.title}</h2>
+  {/* Header */}
+  <div className="flex justify-between items-start">
+    <div>
+      <h2 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition">
+        {c.title}
+      </h2>
+      <p className="text-xs text-gray-400 mt-1">
+        Campaign ID: {c._id.slice(-6)}
+      </p>
+    </div>
 
-    <span className={`px-3 py-1 text-xs rounded-full ${statusColor(c.status)}`}>
+    <span
+      className={`px-3 py-1 text-xs font-medium rounded-full ${statusColor(
+        c.status
+      )}`}
+    >
       {c.status}
     </span>
   </div>
 
-  <p className="text-gray-500 text-sm mt-2 line-clamp-2">
+  {/* Description */}
+  <p className="text-gray-500 text-sm mt-3 line-clamp-2">
     {c.description}
   </p>
 
-  <div className="mt-3 text-sm text-gray-600 space-y-1">
-    <p>💰 Budget: ₹{c.budget?.total}</p>
-    <p>📊 Spent: ₹{c.budget?.spent}</p>
-    <p>👁 Impressions: {c.analytics?.impressions}</p>
-    <p>🖱 Clicks: {c.analytics?.clicks}</p>
+  {/* Budget Progress Bar */}
+  <div className="mt-4">
+    <div className="flex justify-between text-xs text-gray-500 mb-1">
+      <span>Budget</span>
+      <span>
+        ₹{c.budget?.spent} / ₹{c.budget?.total}
+      </span>
+    </div>
+
+    <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+      <div
+        className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"
+        style={{
+          width: `${Math.min(
+            (c.budget?.spent / c.budget?.total) * 100 || 0,
+            100
+          )}%`,
+        }}
+      />
+    </div>
   </div>
 
-  <div className="flex gap-2 mt-4 flex-wrap">
+  {/* Stats */}
+  <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
+    <div className="bg-gray-50 p-2 rounded-lg">
+      <p className="text-gray-400 text-xs">Impressions</p>
+      <p className="font-semibold text-gray-700">
+        {c.analytics?.impressions}
+      </p>
+    </div>
+
+    <div className="bg-gray-50 p-2 rounded-lg">
+      <p className="text-gray-400 text-xs">Clicks</p>
+      <p className="font-semibold text-gray-700">
+        {c.analytics?.clicks}
+      </p>
+    </div>
+  </div>
+
+  {/* Actions */}
+  <div className="flex flex-wrap gap-2 mt-5">
 
     {c.status === "draft" && (
       <button
         onClick={() => dispatch(submitCampaign(c._id))}
-        className="bg-blue-500 text-white px-3 py-1 rounded"
+        className="btn-blue"
       >
         Submit
       </button>
@@ -126,7 +174,7 @@ const navigate = useNavigate();
     {c.status === "active" && (
       <button
         onClick={() => dispatch(pauseCampaign(c._id))}
-        className="bg-yellow-500 text-white px-3 py-1 rounded"
+        className="btn-yellow"
       >
         Pause
       </button>
@@ -135,7 +183,7 @@ const navigate = useNavigate();
     {c.status === "paused" && (
       <button
         onClick={() => dispatch(resumeCampaign(c._id))}
-        className="bg-green-500 text-white px-3 py-1 rounded"
+        className="btn-green"
       >
         Resume
       </button>
@@ -143,29 +191,36 @@ const navigate = useNavigate();
 
     <button
       onClick={() => dispatch(deleteCampaign(c._id))}
-      className="bg-red-500 text-white px-3 py-1 rounded"
+      className="btn-red"
     >
       Delete
     </button>
 
-     <button
-            onClick={() =>{
-             console.log("Navigating to analytics for campaign ID:", c._id) ;
-              navigate(`/advertiser/campaign-analytics/${c._id}`)
-            }}
-            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            View Analytics
-          </button>
+    <button
+      onClick={() =>
+        navigate(`/advertiser/campaign-analytics/${c._id}`)
+      }
+      className="btn-indigo"
+    >
+      Analytics
+    </button>
 
     {(c.status === "draft" || c.status === "rejected") && (
       <button
         onClick={() => setEditCampaign(c)}
-        className="bg-gray-500 text-white px-3 py-1 rounded"
+        className="btn-gray"
       >
         Edit
       </button>
     )}
+    {c.status === "rejected" && (
+  <button
+    onClick={() => setShowReasonModal(c)}
+    className="mt-2 bg-blue-600 text-white px-2 py-2 rounded hover:bg-blue-700"
+  >
+    View Reason
+  </button>
+)}
 
   </div>
 </div>
@@ -271,6 +326,30 @@ const navigate = useNavigate();
                     </div>
                 </div>
             )}
+            {showReasonModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+
+    <div className="bg-white p-6 rounded-xl w-[350px] shadow-lg relative">
+
+      {/* Close */}
+      <button
+        onClick={() => setShowReasonModal(null)}
+        className="absolute top-2 right-3 text-gray-600 text-lg"
+      >
+        ✖
+      </button>
+
+      <h2 className="text-lg font-bold mb-3 text-red-600">
+         Rejection Reason
+      </h2>
+
+      <p className="text-gray-700 text-sm">
+        {showReasonModal.rejectionReason || "No reason provided"}
+      </p>
+
+    </div>
+  </div>
+)}
 
             {showAddFunds && (
   <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">

@@ -1,19 +1,44 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getDashboard } from "../store/slices/dashboardSlice"
-import { submitArticle } from "../store/slices/articleSlice"
+import { submitArticle , clearArticleState } from "../store/slices/articleSlice"
 import { Link } from "react-router-dom"
 import StatusBadge from "../components/StatusBadge"
-
+import { showToast } from "../store/slices/uiMessageSlice"
 const MyArticles = () => {
 
 const dispatch = useDispatch()
 
 const { articles } = useSelector(state => state.dashboard)
+const { message, error } = useSelector(state => state.articles)
 
 useEffect(()=>{
  dispatch(getDashboard())
+
 },[dispatch])
+
+ useEffect(() => {
+    if (message) {
+      dispatch(
+        showToast({
+          message: message,
+          type: "success",
+        })
+      );
+      dispatch(getDashboard()); 
+      dispatch(clearArticleState());
+    }
+
+    if (error) {
+      dispatch(
+        showToast({
+          message: error,
+          type: "error",
+        })
+      );
+      dispatch(clearArticleState());
+    }
+  }, [message, error, dispatch]);
 
 return(
 <>
@@ -76,17 +101,30 @@ My Articles
 
 <td className="p-3 flex gap-2">
 
-<Link
-to={`/articles/edit/${article._id}`}
-className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
->
-Edit
-</Link>
+ {(article.status === "draft" || article.status === "pending") && (
+    <Link
+      to={`/journalist/articles/edit/${article._id}`}
+      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+    >
+      Edit
+    </Link>
+  )}
+ {(article.status === "published") && (
+    <Link
+      to={`/article/${article._id}`}
+      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+    >
+      View Article
+    </Link>
+  )}
+
+  
 
 {article.status === "draft" && (
 
 <button
-onClick={()=>dispatch(submitArticle(article._id))}
+onClick={()=>dispatch(submitArticle(article._id))             
+}
 className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm"
 >
 Submit

@@ -21,23 +21,35 @@ const CategoryPage = () => {
     <>
         <Header />
        <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-8">
+       
+     <div className="max-w-7xl mx-auto px-4 py-8">
 
-      <h1 className="text-3xl font-bold mb-6 capitalize">
-        {category} News
-      </h1>
+  {/* LEFT */}
+  <div className="col-span-12 lg:col-span-9">
 
-      {loading && <p>Loading...</p>}
+    <h1 className="text-3xl font-bold mb-6 capitalize">
+      {category} News
+    </h1>
 
-      <div className="grid gap-6">
+    {loading && <p>Loading...</p>}
 
-        {articles.map((article) => (
-          <NewsCard key={article._id} article={article} />
-        ))}
-
-      </div>
-
+     <div className="grid gap-6 
+                  grid-cols-1 
+                  sm:grid-cols-2 
+                  lg:grid-cols-3">
+      {articles.map((article) => (
+        <NewsCard key={article._id} article={article} />
+      ))}
     </div>
+
+  </div>
+
+  {/* RIGHT (optional) */}
+  <div className="col-span-12 lg:col-span-3">
+    {/* You can reuse TrendingNews here */}
+  </div>
+
+</div>
     </>
   );
 };

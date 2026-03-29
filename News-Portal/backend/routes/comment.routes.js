@@ -7,7 +7,8 @@ import {
   hideComment,
   addReply,
   getCommentsWithReplies,
-  deleteReply
+  deleteReply,
+  getAllCommentsAdmin,
 } from "../controllers/comment.controller.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -20,6 +21,7 @@ router.post("/reply", protect, addReply);
 router.get("/article/:articleId", getCommentsByArticle);
 router.get("/commentWithReplies/:articleId", getCommentsWithReplies);
 
+router.get("/admin", protect, authorizeRoles("admin"), getAllCommentsAdmin);
 router.get("/journalist", protect,authorizeRoles("journalist"), getCommentsForJournalist);
 router.delete("/delete/:id", protect, deleteComment);
 router.delete("/reply/delete/:id", protect, deleteReply);

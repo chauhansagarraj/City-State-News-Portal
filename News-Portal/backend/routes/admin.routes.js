@@ -18,6 +18,10 @@ import {
   getPendingCampaigns,
   approveCampaign,
   rejectCampaign,
+  getSingleUserDetails,
+  getAllArticles,
+  getAllCampaignRevenue,
+  getTopCampaignsByRevenue
 } from "../controllers/admin.controller.js";
 
 import { getAdminDashboard , getMonthlyRevenue , getTopCampaigns , getLocationAnalytics } from "../controllers/adminDashboard.js";
@@ -66,6 +70,20 @@ router.get(
   protect,
   authorizeRoles("admin"),
   getAllUsers
+);
+
+router.get(
+  "/users/:id",
+  protect,
+  authorizeRoles("admin"),
+  getSingleUserDetails
+);
+
+router.get(
+  "/articles",
+  protect,
+  authorizeRoles("admin"),
+  getAllArticles
 );
 
 router.get(
@@ -130,6 +148,21 @@ router.get(
   authorizeRoles("admin"),
   getAdminDashboard
 );
+
+router.get(
+  "/analytics/revenue",
+  protect,
+  authorizeRoles("admin"),
+  getAllCampaignRevenue
+);
+
+router.get(
+  "/analytics/top-campaigns/revenue",
+  protect,
+  authorizeRoles("admin"),
+  getTopCampaignsByRevenue
+);
+
 
 router.get(
   "/analytics/revenue/monthly",

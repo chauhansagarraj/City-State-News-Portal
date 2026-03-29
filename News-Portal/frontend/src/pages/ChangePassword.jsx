@@ -1,6 +1,6 @@
 import { useState , useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { changePassword } from "../store/slices/authSlice"
+import { changePassword , clearStatus } from "../store/slices/authSlice"
 
 const ChangePassword = () => {
 
@@ -41,7 +41,15 @@ useEffect(() => {
       confirmPassword: ""
     })
   }
-}, [message])
+
+  if (message || error) {
+    const timer = setTimeout(() => {
+      dispatch(clearStatus())
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }
+}, [message, error, dispatch])
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
 

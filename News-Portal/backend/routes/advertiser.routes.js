@@ -18,13 +18,14 @@ import {
 import { protect } from "../middleware/authMiddleware.js";
 import { authorizeRoles } from "../middleware/roleMiddleware.js";
 import { verifyApprovedUser } from "../middleware/verifiedUser.js";
+import upload from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", protect, authorizeRoles("advertiser"),verifyApprovedUser , createCampaign);
+router.post("/", protect, authorizeRoles("advertiser"),verifyApprovedUser ,  upload.array("images"), createCampaign);
 router.get("/campaign/my", protect,authorizeRoles("advertiser"),verifyApprovedUser,  getMyCampaigns);
 router.get("/campaign/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, getCampaignById);
-router.put("/update/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, updateCampaign);
+router.put("/update/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, upload.array("images"), updateCampaign);
 router.delete("/delete/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, deleteCampaign);
 router.post("/submit/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, submitCampaign);
 router.put("/pause/:id", protect,authorizeRoles("advertiser"),verifyApprovedUser, pauseCampaign);

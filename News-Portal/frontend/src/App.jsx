@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login.jsx";
-import Register from "./pages/register.jsx";
+import Register from "./pages/Register.jsx";
 import Home from "./pages/Home.jsx";
 import ArticleDetails from "./pages/ArticleDetails.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
@@ -22,10 +22,22 @@ import MyCampaigns from "./pages/MyCampaigns.jsx";
 import AdvertiserDashboardLayout from "./components/AdvertiserDashboardLayout.jsx";
 import AdvertiserDashboardHome from "./pages/AdvertiserDashboardHome.jsx";
 import SingleCampaignAnalytics from "./components/SingleCampaignAnalytics.jsx";
+import AdminLayout from "./components/AdminLayout.jsx";
+import AdminDashboardHome from "./pages/AdminDashboardHome.jsx";
+import AdminManageUsers from "./pages/AdminManageUsers.jsx";
+import AdminManageArticles from "./pages/AdminManageArticles.jsx";
+import AdminManageComments from "./pages/AdminManagesComments.jsx";
+import AdminManageCampaigns from "./pages/AdminManageCampaigns.jsx";
+import AdminRevenue from "./pages/AdminRevenue.jsx";
+import TopCampaigns from "./pages/AdminTopCampaign.jsx";
+import "./indec.css"
+import Toast from "./components/Toast.jsx";
+
 function App() {
 
   return (
     <BrowserRouter>
+      <Toast />
 
       <Routes>
 
@@ -35,13 +47,16 @@ function App() {
         <Route path="/article/:id" element={<ProtectedRoute><ArticleDetails /></ProtectedRoute>} />
         <Route path="/category/:category" element={<CategoryPage />} />
         <Route path="/profile/complete" element={<ProtectedRoute><ProfileComplete /></ProtectedRoute>} />
-        <Route path="/journalist-dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>} />
-        {/* <Route index element={<JournalistDashboard />} /> */}
-        <Route path="/articles/create" element={<ProtectedRoute><CreateArticle /></ProtectedRoute>} />
-        <Route path="/my-articles" element={<ProtectedRoute><MyArticles /></ProtectedRoute>} />
-        <Route path="/journalistDashboard" element={<ProtectedRoute><JournalistDashboard /></ProtectedRoute>} />
-        <Route path="/articles/edit/:id" element={<ProtectedRoute><EditArticle /></ProtectedRoute>} />
-        <Route path="/auth/changePassword" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+        <Route path="/auth/change-password" element={<ChangePassword />} />
+       <Route
+  path="/journalist"
+  element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}
+>
+  <Route index element={<JournalistDashboard />} />
+  <Route path="articles/create" element={<CreateArticle />} />
+  <Route path="articles/edit/:id" element={<EditArticle />} />
+  <Route path="my-articles" element={<MyArticles />} />
+</Route>
         {/* <Route path="/articles/view/:id" element={<ProtectedRoute><ViewArticle /></ProtectedRoute>} /> */}
         <Route
           path="/reader"
@@ -49,8 +64,8 @@ function App() {
         >
           <Route index element={<ReaderHome />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="change-password" element={<ChangePassword />} />
         </Route>
+
         <Route
           path="/advertiser"
           element={<ProtectedRoute><AdvertiserDashboardLayout /></ProtectedRoute>}
@@ -59,6 +74,20 @@ function App() {
           <Route path="campaign/create" element={<ProtectedRoute><CreateCampaign /></ProtectedRoute>} />
           <Route path="campaign/my" element={<ProtectedRoute><MyCampaigns /></ProtectedRoute>} />
           <Route path="campaign-analytics/:id" element={<ProtectedRoute><SingleCampaignAnalytics /></ProtectedRoute>} />
+        </Route>
+
+        <Route
+          path="/admin"
+          element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}
+        >
+          <Route index element={<AdminDashboardHome />} />
+          <Route path="manage-users" element={<AdminManageUsers />} />
+          <Route path="manage-articles" element={<AdminManageArticles />} />
+          <Route path="manage-comments" element={<AdminManageComments />} />
+          <Route path="manage-campaigns" element={<AdminManageCampaigns />} />
+          <Route path="manage-revenue" element={<AdminRevenue />} />
+          <Route path="top-campaigns/revenue" element={<TopCampaigns />} />
+          {/* <Route path="dashboard" element={<AdminDashboardHome />} /> */}
         </Route>
       </Routes>
 

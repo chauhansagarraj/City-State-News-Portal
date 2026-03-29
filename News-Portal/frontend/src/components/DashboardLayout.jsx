@@ -9,8 +9,7 @@ return (
 
 <Sidebar/>
 
-<div className="flex-1 bg-gray-100 p-6">
-
+<div className="ml-64 w-[calc(100%-16rem)] min-h-screen bg-gray-100">
 <Outlet/>
 
 </div>

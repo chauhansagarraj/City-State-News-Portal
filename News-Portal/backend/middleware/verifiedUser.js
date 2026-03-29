@@ -10,6 +10,11 @@ export const verifyApprovedUser = (req, res, next) => {
       .status(403)
       .json({ message: "Your account is not approved yet" });
   }
+  if (req.user.status === "blocked") {
+    return res
+      .status(403)
+      .json({ message: "Your account is blocked. Contact support." });
+  }
 
   next();
 };

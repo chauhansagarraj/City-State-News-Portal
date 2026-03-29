@@ -89,7 +89,7 @@ wallet: {
     // ================= ADMIN APPROVAL =================
     verificationStatus: {
       type: String,
-      enum: ["pending", "approved", "rejected"],
+      enum: ["pending", "approved", "rejected", "blocked"],
       default: "pending",
     },
 

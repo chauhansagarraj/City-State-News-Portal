@@ -101,12 +101,14 @@ const Navbar = () => {
         </Link>
 
         {/* Category Links */}
-        <button className="hover:underline">State News</button>
-        <button className="hover:underline">City News</button>
         <Link to="/category/Politics">Politics</Link>
         <Link to="/category/Business">Business</Link>
         <Link to="/category/Sports">Sports</Link>
         <Link to="/category/Technology">Technology</Link>
+        <Link to="/category/Science">Science</Link>
+        <Link to="/category/Education">Education</Link>
+        <Link to="/category/Entertainment">Entertainment</Link>
+        <Link to="/category/Environment">Environment</Link>
 
         {/* Search */}
         <form onSubmit={handleSearch} className="flex gap-2 ml-auto">
@@ -151,7 +153,7 @@ const Navbar = () => {
               Profile
             </Link>
  <Link
-                to="/auth/changePassword"
+                to="/auth/change-password"
                 className="hover:text-red-400"
                 onClick={() => setMenuOpen(false)}
               >
@@ -172,21 +174,21 @@ const Navbar = () => {
             {loggedInUser.role === "journalist" && (
               <>
                 <Link
-                  to="articles/create"
+                  to="/journalist/articles/create"
                   className="hover:text-red-400"
                   onClick={() => setMenuOpen(false)}
                 >
                   Create Article
                 </Link>
                 <Link
-                  to="my-articles"
+                  to="/journalist/my-articles"
                   className="hover:text-red-400"
                   onClick={() => setMenuOpen(false)}
                 >
                   My Articles
                 </Link>
                 <Link
-                  to="/journalistDashboard"
+                  to="/journalist"
                   className="hover:text-red-400"
                   onClick={() => setMenuOpen(false)}
                 >
@@ -220,6 +222,15 @@ const Navbar = () => {
                   Dashboard
                 </Link>
               </>
+            )}
+            {loggedInUser.role === "admin" && (
+              <Link
+                to="/admin"
+                className="hover:text-red-400"
+                onClick={() => setMenuOpen(false)}
+              >
+               Dashboard
+              </Link>
             )}
 
             {/* <button

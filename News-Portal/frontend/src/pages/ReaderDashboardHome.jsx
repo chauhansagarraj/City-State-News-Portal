@@ -1,10 +1,11 @@
-import { useEffect } from "react"
+import { useEffect , useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getReaderDashboard } from "../store/slices/readerSlice"
 import { Link } from "react-router-dom"
 
 const ReaderHome = () => {
-
+const [likedVisible, setLikedVisible] = useState(3);
+const [savedVisible, setSavedVisible] = useState(3);
   const dispatch = useDispatch()
   const { recommended, likedArticles,savedArticles ,comments, activitySummary } =
     useSelector(state => state.reader)
@@ -80,7 +81,8 @@ const ReaderHome = () => {
         <h2 className="text-2xl font-semibold mb-4">❤️ Liked Articles</h2>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {likedArticles?.map(a => (
+         {likedArticles?.slice(0, likedVisible).map((a , index) => (
+          <>
             <div
               key={a._id}
               className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
@@ -110,7 +112,31 @@ const ReaderHome = () => {
               </div>
 
             </div>
+  {/* Show More */}
+  {index === 2 && likedArticles?.length > likedVisible && (
+  <div className="flex justify-center gap-4 mt-6">
+    <button
+      onClick={() => setLikedVisible(prev => prev + 3)}
+      className="text-red-500 font-semibold hover:underline"
+    >
+       Show More →
+    </button>
+    </div>
+  )}
+  </>
           ))}
+
+
+  {/* Show Less */}
+  {likedVisible > 3 && (
+    <button
+      onClick={() => setLikedVisible(3)}
+      className="text-red-800 font-semibold hover:underline"
+    >
+      Show Less
+    </button>
+  )}
+
         </div>
       </div>
 
@@ -122,7 +148,8 @@ const ReaderHome = () => {
     {savedArticles?.length === 0 ? (
       <p className="text-gray-500">No saved articles yet</p>
     ) : (
-      savedArticles?.map(a => (
+      savedArticles?.slice(0, savedVisible ).map((a , index) => (
+        <>
         <div
           key={a._id}
           className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
@@ -157,8 +184,27 @@ const ReaderHome = () => {
           </div>
 
         </div>
+         {index === 2 && savedArticles?.length > savedVisible && (
+  <button
+    onClick={() => setSavedVisible(prev => prev + 3)}
+   className="text-red-500 font-semibold hover:underline"
+  >
+    Show More →
+  </button>
+)}
+
+</>
       ))
     )}
+
+{savedVisible > 3 && (
+  <button
+    onClick={() => setSavedVisible(3)}
+   className="text-red-500 font-semibold hover:underline"
+  >
+    Show Less
+  </button>
+)}
   </div>
 </div>
 

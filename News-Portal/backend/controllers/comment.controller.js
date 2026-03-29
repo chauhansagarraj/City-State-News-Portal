@@ -78,21 +78,49 @@ export const getCommentsForJournalist = async (req, res) => {
       .populate("user", "name email")
       .sort({ createdAt: -1 });
 
-    const filteredComments = comments.filter(c => c.article !== null);
+    // Filter only matched articles
+    const filtered = comments.filter(c => c.article);
 
     res.status(200).json({
       success: true,
-      total: filteredComments.length,
-      comments: filteredComments,
+      total: filtered.length,
+      comments: filtered,
     });
 
   } catch (error) {
     res.status(500).json({
-      message: "Server error while fetching journalist comments",
+      message: "Server error",
     });
   }
 };
+export const getAllCommentsAdmin = async (req, res) => {
+  try {
+    const { page = 1, limit = 10, status } = req.query;
 
+    const query = {};
+    if (status) query.status = status; // filter support
+
+    const total = await Comment.countDocuments(query);
+
+    const comments = await Comment.find(query)
+      .populate("user", "name")
+      .populate("article", "title")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    res.status(200).json({
+      success: true,
+      total,
+      page: Number(page),
+      totalPages: Math.ceil(total / limit),
+      comments,
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching comments" });
+  }
+};
 export const deleteComment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -107,13 +135,13 @@ export const deleteComment = async (req, res) => {
 
     // Allow only owner or admin
     if (
-      comment.user.toString() !== req.user._id.toString() &&
-      req.user.role !== "admin"
-    ) {
-      return res.status(403).json({
-        message: "Not authorized to delete this comment",
-      });
-    }
+  req.user.role !== "admin" &&
+  comment.user.toString() !== req.user._id.toString()
+) {
+  return res.status(403).json({
+    message: "Not authorized",
+  });
+}
 
     comment.status = "deleted";
     await comment.save();
@@ -135,24 +163,34 @@ export const hideComment = async (req, res) => {
     const { id } = req.params;
 
     const comment = await Comment.findById(id);
-
+if (req.user.role !== "admin") {
+  return res.status(403).json({
+    message: "Only admin can hide/unhide comments",
+  });
+}
     if (!comment) {
       return res.status(404).json({
         message: "Comment not found",
       });
     }
 
-    comment.status = "hidden";
+    // 🔥 Toggle logic
+    comment.status =
+      comment.status === "hidden" ? "visible" : "hidden";
+
     await comment.save();
 
     res.status(200).json({
       success: true,
-      message: "Comment hidden successfully",
+      message: `Comment ${
+        comment.status === "hidden" ? "hidden" : "unhidden"
+      } successfully`,
+      status: comment.status,
     });
 
   } catch (error) {
     res.status(500).json({
-      message: "Server error while hiding comment",
+      message: "Server error while updating comment",
     });
   }
 };

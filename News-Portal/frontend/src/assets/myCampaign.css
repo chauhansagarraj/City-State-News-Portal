@@ -1,0 +1,6 @@
+.btn-blue { @apply bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm; }
+.btn-yellow { @apply bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-sm; }
+.btn-green { @apply bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm; }
+.btn-red { @apply bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm; }
+.btn-indigo { @apply bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm; }
+.btn-gray { @apply bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded-lg text-sm; }

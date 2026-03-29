@@ -3,14 +3,14 @@ import { useParams } from "react-router-dom";
 import API from "../services/axios";
 
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
-
 const SingleCampaignAnalytics = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
@@ -69,31 +69,29 @@ const SingleCampaignAnalytics = () => {
       <div className="bg-white p-5 rounded-xl shadow">
         <h2 className="font-semibold mb-4">Monthly Performance</h2>
 
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data.monthlyData}>
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Line
-              type="monotone"
-              dataKey="clicks"
-              stroke="#3b82f6"
-              name="Clicks"
-            />
-            <Line
-              type="monotone"
-              dataKey="impressions"
-              stroke="#3b82f6"
-              name="Impressions"
-            />
-            {/* <Line
-              type="monotone"
-              dataKey="impressions"
-              stroke="#10b981"
-              name="spent"
-            /> */}
-          </LineChart>
-        </ResponsiveContainer>
+       <ResponsiveContainer width="100%" height={300}>
+  <AreaChart data={data.monthlyData}>
+    <XAxis dataKey="month" />
+    <YAxis />
+    <Tooltip />
+    <Legend />
+
+    <Area
+      type="monotone"
+      dataKey="clicks"
+      stroke="#3b82f6"
+      fill="#93c5fd"
+      name="Clicks"
+    />
+    <Area
+      type="monotone"
+      dataKey="impressions"
+      stroke="#10b981"
+      fill="#86efac"
+      name="Impressions"
+    />
+  </AreaChart>
+</ResponsiveContainer>
       </div>
 
       {/* 🧾 Recent Activity (Optional but powerful) */}

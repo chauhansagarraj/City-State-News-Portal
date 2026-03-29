@@ -93,13 +93,20 @@ export const toggleLikeArticle = createAsyncThunk(
 // journalist side 
 
 export const createArticle = createAsyncThunk(
-  "articles/create",
+  "/journalist/articles/create",
   async (formData, { rejectWithValue }) => {
     try {
-      const res = await API.post("/journalist/articles", formData);
+      const res = await API.post("/journalist/articles", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       return res.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data);
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to create article"
+      );
     }
   }
 );
@@ -107,7 +114,7 @@ export const createArticle = createAsyncThunk(
 /* EDIT ARTICLE */
 
 export const editArticle = createAsyncThunk(
-  "articles/edit",
+  "/journalist/articles/edit/:id",
   async ({ id, formData }, { rejectWithValue }) => {
     try {
       const res = await API.put(`/journalist/edit/${id}`, formData);
@@ -121,11 +128,11 @@ export const editArticle = createAsyncThunk(
 /* SUBMIT ARTICLE */
 
 export const submitArticle = createAsyncThunk(
-  "articles/submit",
+  "journalist/articles/submit",
   async (id, { rejectWithValue }) => {
     try {
       const res = await API.put(`/journalist/submit/${id}`);
-      return res.data.article;
+      return res.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
@@ -268,6 +275,11 @@ const articleSlice = createSlice({
 .addCase(createArticle.pending, (state) => {
         state.loading = true;
       })
+      .addCase(createArticle.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload;   // ✅ THIS IS MISSING
+  state.message = null;
+})
       .addCase(createArticle.fulfilled, (state, action) => {
         state.loading = false;
         state.article = action.payload;
@@ -292,9 +304,13 @@ const articleSlice = createSlice({
   state.loading = true
 })
 
-.addCase(submitArticle.fulfilled,(state,action)=>{
-  state.loading = false
+.addCase(submitArticle.fulfilled, (state, action) => {
   state.message = action.payload.message;
+  state.error = null;
+})
+.addCase(submitArticle.rejected, (state, action) => {
+  state.error = action.payload;   // ✅ REQUIRED
+  state.message = null;
 })
 
 .addCase(getArticleById.fulfilled,(state,action)=>{

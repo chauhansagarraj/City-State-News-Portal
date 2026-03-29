@@ -36,13 +36,13 @@ const articleSchema = new mongoose.Schema(
 
     state: {
       type: String,
-      required: true,
+      // required: true,
       // Gujarat, Maharashtra, etc.
     },
 
     city: {
       type: String,
-      required: true,
+      // required: true,
       // Ahmedabad, Surat, etc.
     },
 

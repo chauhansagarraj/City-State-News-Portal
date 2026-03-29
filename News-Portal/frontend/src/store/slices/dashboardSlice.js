@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import API from "../../services/axios"
 
 export const getDashboard = createAsyncThunk(
-"/journalistDashboard",
+"/journalist",
 async (_, {rejectWithValue}) => {
 
 try{

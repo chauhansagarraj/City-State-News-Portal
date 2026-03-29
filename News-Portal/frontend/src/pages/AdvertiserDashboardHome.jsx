@@ -14,6 +14,17 @@ import {
   Cell,
 } from "recharts";
 
+const cardStyles = [
+  { bg: "bg-blue-50", border: "border-blue-500", text: "text-blue-600" },
+  { bg: "bg-green-50", border: "border-green-500", text: "text-green-600" },
+  { bg: "bg-purple-50", border: "border-purple-500", text: "text-purple-600" },
+  { bg: "bg-yellow-50", border: "border-yellow-500", text: "text-yellow-600" },
+  { bg: "bg-red-50", border: "border-red-500", text: "text-red-600" },
+  { bg: "bg-pink-50", border: "border-pink-500", text: "text-pink-600" },
+  { bg: "bg-indigo-50", border: "border-indigo-500", text: "text-indigo-600" },
+  { bg: "bg-teal-50", border: "border-teal-500", text: "text-teal-600" },
+];
+
 const DashboardHome = () => {
   const dispatch = useDispatch();
   const { dashboard } = useSelector((state) => state.advertiserDashboard);
@@ -50,18 +61,15 @@ const STATUS_COLORS = {
     <div className="space-y-6">
 
       {/* 🔥 Stats Cards */}
-      <div className="grid grid-cols-3 gap-6">
-        <Card title="Total Campaigns" value={dashboard.totalCampaigns} />
-        <Card title="Active Campaigns" value={dashboard.activeCampaigns} />
-        <Card title="Clicks" value={dashboard.totalClicks} />
-        <Card title="Impressions" value={dashboard.totalImpressions} />
-        <Card title="Spent" value={`₹${dashboard.totalSpent}`} />
-        {/* <Card title="Revenue" value={`₹${dashboard.totalRevenue}`} /> */}
-{/* <Card title="Profit" value={`₹${dashboard.totalProfit}`} /> */}
-<Card title="Avg CPC" value={`₹${dashboard.overallCPC}`} />
-{/* <Card title="ROI" value={`${dashboard.overallROI}%`} /> */}
-        <Card title="Wallet" value={`₹${dashboard.walletBalance}`} />
-      </div>
+    <div className="grid grid-cols-3 gap-6">
+  <Card title="Total Campaigns" value={dashboard.totalCampaigns} style={cardStyles[0]} />
+  <Card title="Active Campaigns" value={dashboard.activeCampaigns} style={cardStyles[1]} />
+  <Card title="Clicks" value={dashboard.totalClicks} style={cardStyles[2]} />
+  <Card title="Impressions" value={dashboard.totalImpressions} style={cardStyles[3]} />
+  <Card title="Spent" value={`₹${dashboard.totalSpent}`} style={cardStyles[4]} />
+  <Card title="Avg CPC" value={`₹${dashboard.overallCPC}`} style={cardStyles[5]} />
+  <Card title="Wallet" value={`₹${dashboard.walletBalance}`} style={cardStyles[6]} />
+</div>
 
       {/* 📊 Charts */}
       <div className="grid grid-cols-2 gap-6">
@@ -109,9 +117,14 @@ const STATUS_COLORS = {
 export default DashboardHome;
 
 // 🔹 Reusable Card Component
-const Card = ({ title, value }) => (
-  <div className="bg-blue-300 p-5 rounded-xl shadow hover:shadow-md transition">
-    <p className="text-black-500 font-bold">{title}</p>
-    <h2 className="text-2xl font-bold mt-2">{value}</h2>
+const Card = ({ title, value, style }) => (
+  <div
+    className={`p-5 rounded-xl shadow hover:shadow-lg transition border-l-4 ${style.bg} ${style.border}`}
+  >
+    <p className="text-gray-500 text-sm">{title}</p>
+
+    <h2 className={`text-2xl font-bold mt-2 ${style.text}`}>
+      {value}
+    </h2>
   </div>
 );

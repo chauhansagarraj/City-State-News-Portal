@@ -180,8 +180,11 @@ const advertiserSlice = createSlice({
   state.campaigns = state.campaigns.filter(
     (c) => c._id !== action.payload.id
   );
-
   state.message = action.payload.message;
+})
+.addCase(deleteCampaign.rejected, (state, action) => {
+
+  state.error = action.payload;
 })
       // SUBMIT
       .addCase(submitCampaign.fulfilled, (state, action) => {

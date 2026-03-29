@@ -3,7 +3,7 @@ import { useDispatch , useSelector } from "react-redux";
 import { createArticle , clearArticleState } from "../store/slices/articleSlice";
 import { statesAndCities } from "../assets/indiaLocation";
 import { newsCategories } from "../assets/newsCategories";
-
+import { showToast } from "../store/slices/uiMessageSlice";
 const CreateArticle = () => {
 
 const dispatch = useDispatch();
@@ -59,11 +59,31 @@ data.append("images",images[i])
 
 dispatch(createArticle(data))
 
-useEffect(() => {
+// useEffect(() => {
 
-dispatch(clearArticleState())   }, [dispatch])
-}
+// dispatch(clearArticleState())   }, [dispatch])
+};
+ useEffect(() => {
+    if (message) {
+      dispatch(
+        showToast({
+          message: message,
+          type: "success",
+        })
+      );
+      dispatch(clearArticleState());
+    }
 
+    if (error) {
+      dispatch(
+        showToast({
+          message: error,
+          type: "error",
+        })
+      );
+      dispatch(clearArticleState());
+    }
+  }, [message, error, dispatch]);
 // useEffect(() => {
 //   if (message || error) {
 //     const timer = setTimeout(() => {
@@ -157,7 +177,7 @@ disabled={!form.state}
 Create Draft
 </button>
 
-{message && (
+{/* {message && (
   <div className="bg-green-100 text-green-700 p-3 rounded mb-4">
     {message}
   </div>
@@ -166,7 +186,7 @@ Create Draft
   <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
     {error}
   </div>
-)}
+)} */}
 
 </form>
 

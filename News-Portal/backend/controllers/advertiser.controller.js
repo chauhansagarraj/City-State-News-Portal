@@ -3,29 +3,65 @@ import User from "../models/user.model.js";
 
 export const createCampaign = async (req, res) => {
   try {
-        const user = await User.findById(req.user.id);
+    const {
+      title,
+      description,
+      redirectUrl,
+      "budget.total": total,
+      "budget.costPerClick": costPerClick,
+      "budget.costPerImpression": costPerImpression,
+      "schedule.startDate": startDate,
+      "schedule.endDate": endDate,
+    } = req.body;
 
-    if (user.wallet.balance <= 0) {
-      return res.status(400).json({
-        message: "Please add funds before creating campaign",
-      });
+    // Validate required fields
+    if (!title || !description || !redirectUrl) {
+      return res.status(400).json({ message: "Title, description, and redirectUrl are required" });
     }
+
+    // Build budget and schedule objects
+    const budget = {
+      total: Number(total),
+      costPerClick: Number(costPerClick),
+      costPerImpression: Number(costPerImpression),
+    };
+
+    const schedule = {
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+    };
+
+       if (!req.files || req.files.length === 0) {
+      console.log("No files uploaded");
+    } else {
+      console.log("Uploaded files:", req.files);
+    }
+
+    // Handle multiple files (images/videos)
+    //  const serverURL = process.env.SERVER_URL || "http://localhost:5000";
+    const imagePaths = req.files.map(file => file.path);// full URLs
+
+    // Create campaign
     const campaign = await Campaign.create({
-      ...req.body,
-      schedule: {
-        startDate: new Date(req.body.schedule.startDate),
-        endDate: new Date(req.body.schedule.endDate),
-      },
-      advertiser: req.user.id,
-      status: "draft",
+      title,
+      description,
+      redirectUrl,
+      budget,
+      schedule,
+      images : imagePaths || [], // store array of URLs
+      advertiser: req.user._id,
     });
+    // console.log("Uploaded files:", req.files);
+    
 
     res.status(201).json({
-      message: "Campaign created (draft)",
+      success: true,
+      message: "Campaign created successfully",
       campaign,
     });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    console.error("Create Campaign Error:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -52,13 +88,22 @@ export const getCampaignById = async (req, res) => {
 
 export const updateCampaign = async (req, res) => {
   try {
+    let updateData = { ...req.body };
+
+    if (req.file) {
+      updateData.media = {
+        url: `/uploads/${req.file.filename}`,
+        type: req.file.mimetype.startsWith("video") ? "video" : "image",
+      };
+    }
+
     const campaign = await Campaign.findOneAndUpdate(
       {
         _id: req.params.id,
         advertiser: req.user.id,
-        status: { $in: ["draft", "rejected"] }
+        status: { $in: ["draft", "rejected"] },
       },
-      { $set: req.body },
+      { $set: updateData },
       { new: true }
     );
 
@@ -76,7 +121,6 @@ export const updateCampaign = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 export const deleteCampaign = async (req, res) => {
   const campaign = await Campaign.findOne({
     _id: req.params.id,
@@ -232,15 +276,40 @@ export const trackImpression = async (req, res) => {
     if (campaign.analytics.lastImpressions.length > 200) {
       campaign.analytics.lastImpressions.shift();
     }
+    // 📍 LOCATION TRACKING (NEW)
+const city = req.user?.city;
+const state = req.user?.state;
+
+// ✅ DO NOT RETURN
+if (city && state) {
+  let locationEntry = campaign.analytics.locations.find(
+    (l) => l.city === city && l.state === state
+  );
+
+  if (locationEntry) {
+    locationEntry.impressions += 1;
+  } else {
+    campaign.analytics.locations.push({
+      city,
+      state,
+      clicks: 0,
+      impressions: 1,
+    });
+  }
+}
 
     await advertiser.save();
     await campaign.save();
+    console.log("USER:", req.user);
+console.log("CITY:", req.user?.city);
+console.log("STATE:", req.user?.state);
 
     res.json({
       message: "Impression tracked successfully",
       impressions: campaign.analytics.impressions,
       spent: campaign.budget.spent,
       walletBalance: advertiser.wallet.balance,
+      location: { city, state },
     });
 
   } catch (err) {
@@ -328,14 +397,38 @@ export const trackClick = async (req, res) => {
     if (campaign.budget.spent >= campaign.budget.total) {
       campaign.status = "completed";
     }
+    // 📍 LOCATION TRACKING (NEW)
+const city = req.user?.city;
+const state = req.user?.state;
 
+// ✅ DO NOT RETURN
+if (city && state) {
+  let locationEntry = campaign.analytics.locations.find(
+    (l) => l.city === city && l.state === state
+  );
+
+  if (locationEntry) {
+    locationEntry.clicks += 1;
+  } else {
+    campaign.analytics.locations.push({
+      city,
+      state,
+      clicks: 1,
+      impressions: 0,
+    });
+  }
+}   
+     console.log("LOCATIONS BEFORE SAVE:", campaign.analytics.locations);
     await advertiser.save();
     await campaign.save();
+    const updated = await Campaign.findById(campaign._id);
+console.log("LOCATIONS AFTER SAVE:", updated.analytics.locations);
 
     res.json({
       message: "Click tracked successfully",
       spent: campaign.budget.spent,
       walletBalance: advertiser.wallet.balance,
+      location: { city, state },
     });
 
   } catch (err) {
@@ -376,7 +469,7 @@ export const getActiveAds = async (req, res) => {
   try {
     const ads = await Campaign.find({
       status: "active",
-    }).select("_id title description redirectUrl budget analytics"); 
+    }).select("_id title description redirectUrl budget analytics images"); 
     // ✅ only required fields
 
     res.json(ads);

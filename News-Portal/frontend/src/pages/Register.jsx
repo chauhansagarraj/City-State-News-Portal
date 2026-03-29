@@ -17,6 +17,7 @@ const Register = () => {
         phone: "",
         city: ""
     });
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         setFormData({
@@ -28,13 +29,40 @@ const Register = () => {
    const handleSubmit = async (e) => {
   e.preventDefault();
 
+    const isValid = validate();
+  if (!isValid) return;
+
   const res = await dispatch(registerUser(formData));
 
   if (res.meta.requestStatus === "fulfilled") {
     navigate("/");
   }
 };
+const validate = () => {
+  let newErrors = {};
 
+  // Email validation
+  if (!formData.email) {
+    newErrors.email = "Email is required";
+  } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    newErrors.email = "Invalid email format";
+  }
+
+  // Password validation
+  if (!formData.password) {
+    newErrors.password = "Password is required";
+  } else if (formData.password.length < 6) {
+    newErrors.password = "Password must be at least 6 characters";
+  }
+  else if (!/^(?=.*[A-Z])(?=.*[0-9]).{6,}$/.test(formData.password)) {
+  newErrors.password =
+    "Password must contain 1 uppercase letter and 1 number";
+}
+
+  setErrors(newErrors);
+
+  return Object.keys(newErrors).length === 0;
+};
   
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -59,21 +87,27 @@ const Register = () => {
                         className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                     />
 
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        onChange={handleChange}
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
+             <input
+  type="email"
+  name="email"
+  placeholder="Email"
+  onChange={handleChange}
+  className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+/>
+{errors.email && (
+  <p className="text-red-500 text-sm">{errors.email}</p>
+)}
 
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        onChange={handleChange}
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
+                <input
+  type="password"
+  name="password"
+  placeholder="Password"
+  onChange={handleChange}
+  className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+/>
+{errors.password && (
+  <p className="text-red-500 text-sm">{errors.password}</p>
+)}
 
                     <input
                         type="text"

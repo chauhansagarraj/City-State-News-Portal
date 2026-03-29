@@ -16,16 +16,14 @@ const campaignSchema = new mongoose.Schema(
 
     description: String,
 
-    media: {
-      url: { type: String,
-        //  required: true
-         },
-      type: {
+  
+    images: [
+      {
         type: String,
-        enum: ["image", "video", "gif"],
-        // required: true,
+        default : []
+         // URL or file path
       },
-    },
+    ],
 
     placement: {
       type: String,
@@ -80,6 +78,14 @@ revenue: { type: Number, default: 0 },
     analytics: {
       impressions: { type: Number, default: 0 },
       clicks: { type: Number, default: 0 },
+        locations: [
+    {
+      city: { type: String, default: "Unknown" },
+      state: { type: String, default: "Unknown" },
+      clicks: { type: Number, default: 0 },
+      impressions: { type: Number, default: 0 },
+    },
+  ],
         lastImpressions: [
     {
       ip: String,

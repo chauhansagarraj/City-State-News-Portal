@@ -18,6 +18,9 @@ import advertiserRoutes from "./routes/advertiser.routes.js";
 import advertiserDashboardRoutes from "./routes/advertiserDashboard.routes.js";
 import "./utils/campaignSchedular.js";
 import generateToken from "./utils/generateTokens.js";
+import path from "path";
+import { fileURLToPath } from "url";
+// import upload from "./middleware/uploadMiddleware.js";
 dotenv.config();
 connectDB();
 
@@ -29,6 +32,10 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);

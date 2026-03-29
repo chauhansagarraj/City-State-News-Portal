@@ -181,28 +181,34 @@ export const getLocationAnalytics = async (req, res) => {
     const locationData = {};
 
     campaigns.forEach((c) => {
-      const key = `${c.target.city}, ${c.target.state}`;
+      c.analytics.locations.forEach((loc) => {
+          if (loc.city === "Unknown" || loc.state === "Unknown") return;
+        const key = `${loc.city}, ${loc.state}`;
 
-      if (!locationData[key]) {
-        locationData[key] = {
-          clicks: 0,
-          impressions: 0,
-          revenue: 0,
-        };
-      }
+        if (!locationData[key]) {
+          locationData[key] = {
+            clicks: 0,
+            impressions: 0,
+            revenue: 0,
+          };
+        }
 
-      locationData[key].clicks += c.analytics.clicks;
-      locationData[key].impressions += c.analytics.impressions;
-      locationData[key].revenue += c.budget.spent;
+        locationData[key].clicks += loc.clicks;
+        locationData[key].impressions += loc.impressions;
+
+        // optional: distribute revenue proportionally
+        locationData[key].revenue += c.budget.spent;
+      });
     });
 
-    const result = Object.keys(locationData).map((loc) => ({
-      location: loc,
-      ...locationData[loc],
-    }));
+    const result = Object.keys(locationData)
+      .map((loc) => ({
+        location: loc,
+        ...locationData[loc],
+      }))
+      .sort((a, b) => b.clicks - a.clicks); // 🔥 top clicks first
 
     res.json(result);
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

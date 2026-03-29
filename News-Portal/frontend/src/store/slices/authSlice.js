@@ -46,7 +46,7 @@ export const loginUser = createAsyncThunk(
 
 // CHANGE PASSWORD
 export const changePassword = createAsyncThunk(
-  "auth/changePassword",
+  "auth/change-password",
   async (formData, thunkAPI) => {
     try {
       const res = await API.put("/auth/change-password", formData);
@@ -69,6 +69,10 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       state.isAuthenticated = false;
+    },
+      clearStatus: (state) => {
+      state.message = null
+      state.error = null
     },
   },
 
@@ -135,6 +139,6 @@ const authSlice = createSlice({
     
 });
 
-export const { logout } = authSlice.actions;
+export const { logout , clearStatus } = authSlice.actions;
 
 export default authSlice.reducer;
