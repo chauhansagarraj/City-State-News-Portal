@@ -27,7 +27,7 @@ const ArticleReviewModal = ({ article, onClose, dispatch, actions }) => {
           <p><b>City:</b> {article.city}</p>
 
 
-          {/* 🔥 Content */}
+          {/*  Content */}
           <div>
             <b>Content:</b>
             <div className="mt-2 p-3 border rounded max-h-60 overflow-y-auto bg-gray-50">
@@ -62,7 +62,7 @@ const ArticleReviewModal = ({ article, onClose, dispatch, actions }) => {
 
         </div>
 
-        {/* 🔥 Actions */}
+        {/*  Actions */}
         <div className="flex justify-end gap-4 mt-6">
 
           <button

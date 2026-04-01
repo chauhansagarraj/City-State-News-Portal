@@ -203,7 +203,7 @@ export const trackImpression = async (req, res) => {
   try {
     const campaign = await Campaign
       .findById(req.params.id)
-      .populate("advertiser");   // ⭐ REQUIRED
+      .populate("advertiser");   
 
     if (!campaign)
       return res.status(404).json({ message: "Campaign not found" });
@@ -216,7 +216,7 @@ export const trackImpression = async (req, res) => {
     const now = new Date();
     const cooldown = 20 * 60 * 1000; // 20 minutes
 
-    // 🔒 Duplicate prevention
+    //  Duplicate prevention
     const recentImpression = campaign.analytics.lastImpressions.find(
       (imp) =>
         imp.ip === userIP &&
@@ -276,11 +276,11 @@ export const trackImpression = async (req, res) => {
     if (campaign.analytics.lastImpressions.length > 200) {
       campaign.analytics.lastImpressions.shift();
     }
-    // 📍 LOCATION TRACKING (NEW)
+    //  LOCATION TRACKING (NEW)
 const city = req.user?.city;
 const state = req.user?.state;
 
-// ✅ DO NOT RETURN
+//  DO NOT RETURN
 if (city && state) {
   let locationEntry = campaign.analytics.locations.find(
     (l) => l.city === city && l.state === state
@@ -401,7 +401,7 @@ export const trackClick = async (req, res) => {
 const city = req.user?.city;
 const state = req.user?.state;
 
-// ✅ DO NOT RETURN
+//  DO NOT RETURN
 if (city && state) {
   let locationEntry = campaign.analytics.locations.find(
     (l) => l.city === city && l.state === state
@@ -470,7 +470,7 @@ export const getActiveAds = async (req, res) => {
     const ads = await Campaign.find({
       status: "active",
     }).select("_id title description redirectUrl budget analytics images"); 
-    // ✅ only required fields
+    //  only required fields
 
     res.json(ads);
   } catch (err) {
@@ -494,10 +494,10 @@ export const getWallet = async (req, res) => {
 //       return res.status(404).json({ message: "Campaign not found" });
 //     }
 
-//     // 📊 Monthly aggregation
+//     //  Monthly aggregation
 //     const monthlyMap = {};
 
-//     // 🟢 Process clicks
+//     //  Process clicks
 //     campaign.analytics.lastClicks.forEach((c) => {
 //       const month = new Date(c.time).toLocaleString("default", {
 //         month: "short",
@@ -510,7 +510,7 @@ export const getWallet = async (req, res) => {
 //       monthlyMap[month].clicks += 1;
 //     });
 
-//     // 🔵 Process impressions
+//     //  Process impressions
 //     campaign.analytics.lastImpressions.forEach((i) => {
 //       const month = new Date(i.time).toLocaleString("default", {
 //         month: "short",
@@ -551,7 +551,7 @@ export const getSingleCampaignAnalytics = async (req, res) => {
     const impressions = campaign.analytics.impressions || 0;
     const spent = campaign.budget.spent || 0;
 
-    // 🔥 Advanced Metrics
+    //  Advanced Metrics
     const ctr =
       impressions > 0 ? ((clicks / impressions) * 100).toFixed(2) : 0;
 
@@ -564,11 +564,11 @@ export const getSingleCampaignAnalytics = async (req, res) => {
         ? (((revenue - spent) / spent) * 100).toFixed(2)
         : 0;
 
-    // 📊 Monthly aggregation
+    //  Monthly aggregation
     const monthlyMap = {};
     const cpcValue = clicks > 0 ? spent / clicks : 0; // for monthly spent
 
-    // 🟢 Process clicks
+    //  Process clicks
     campaign.analytics.lastClicks.forEach((c) => {
       const month = new Date(c.time).toLocaleString("default", {
         month: "short",
@@ -584,10 +584,10 @@ export const getSingleCampaignAnalytics = async (req, res) => {
       }
 
       monthlyMap[month].clicks += 1;
-      monthlyMap[month].spent += cpcValue; // 🔥 add spent
+      monthlyMap[month].spent += cpcValue; //  add spent
     });
 
-    // 🔵 Process impressions
+    //  Process impressions
     campaign.analytics.lastImpressions.forEach((i) => {
       const month = new Date(i.time).toLocaleString("default", {
         month: "short",
@@ -607,11 +607,11 @@ export const getSingleCampaignAnalytics = async (req, res) => {
 
     const monthlyData = Object.values(monthlyMap);
 
-    // ✅ Final Response
+    //  Final Response
     res.json({
       title: campaign.title,
 
-      // 🔹 Overall stats
+      //  Overall stats
       clicks,
       impressions,
       spent,
@@ -619,10 +619,10 @@ export const getSingleCampaignAnalytics = async (req, res) => {
       cpc,
       roi,
 
-      // 🔹 Chart data
+      //  Chart data
       monthlyData,
 
-      // 🔹 Activity logs
+      //  Activity logs
       lastClicks: campaign.analytics.lastClicks,
     });
 

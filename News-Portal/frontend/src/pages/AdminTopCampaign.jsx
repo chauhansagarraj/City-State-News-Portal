@@ -32,12 +32,10 @@ const TopCampaigns = () => {
         🏆 <span>Top Campaigns</span>
       </h1>
 
-      {/* 🥇 TOP CAMPAIGN */}
       <div className="relative overflow-hidden rounded-3xl p-8 mb-10 
         bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 
         text-white shadow-2xl">
 
-        {/* Glow effect */}
         <div className="absolute inset-0 bg-white opacity-10 blur-2xl"></div>
 
         <div className="relative z-10">

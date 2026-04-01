@@ -94,7 +94,6 @@ const AdminManageArticles = () => {
       <td className="py-2">
         <div className="flex flex-wrap gap-2">
 
-        {/* ✅ SAME AS USERS → VIEW ALWAYS */}
         <button
           onClick={() => setSelectedArticle(article)}
           className="bg-gray-800 text-white px-2 py-1 rounded"
@@ -102,7 +101,6 @@ const AdminManageArticles = () => {
           View
         </button>
 
-        {/* ✅ Pending Actions (same as users) */}
         {tab === "pending" && (
           <>
             <button
@@ -144,7 +142,7 @@ const AdminManageArticles = () => {
           </>
         )}
 
-        {/* ✅ Approved → Publish */}
+        {/*  Approved → Publish */}
         {article.status === "approved" && (
           <button
             onClick={() => {
@@ -171,7 +169,6 @@ const AdminManageArticles = () => {
         </table>
       </div>
 
-      {/* 🔥 Modal */}
       <ArticleReviewModal
         article={selectedArticle}
         onClose={() => setSelectedArticle(null)}

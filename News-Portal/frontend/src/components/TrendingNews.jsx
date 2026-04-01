@@ -19,7 +19,7 @@ const TrendingNews = ({ articles }) => {
 
       {/* Header */}
       <h3 className="text-xl font-bold mb-4 border-b pb-2 text-orange-600">
-        🔥 Trending News
+         Trending News
       </h3>
 
       <div className="space-y-4">

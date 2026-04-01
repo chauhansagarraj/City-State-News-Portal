@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../services/axios";
 
-// ✅ GET ACTIVE ADS
 export const getActiveAds = createAsyncThunk(
   "ads/getActiveAds",
   async (_, thunkAPI) => {

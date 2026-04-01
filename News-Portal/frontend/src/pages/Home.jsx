@@ -26,7 +26,6 @@ const articlesPerPage = 6;
     dispatch(getActiveAds());
   }, [dispatch]);
 
-  // 🔥 TRENDING NEWS (RIGHT SIDE)
   const trendingNews = [...allArticles]
     .sort((a, b) => b.views - a.views)
     .slice(0, 20);
@@ -42,7 +41,6 @@ const totalPages = Math.ceil(articles.length / 6);
 
       <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-12 gap-6">
 
-        {/* 📰 LEFT - LATEST NEWS (BIGGER AREA) */}
         <div className="col-span-12 lg:col-span-9">
 
 
@@ -54,9 +52,7 @@ const totalPages = Math.ceil(articles.length / 6);
           <h2 className="text-2xl font-bold mb-6">
             Latest News
           </h2>
-          {/* ADVERTISEMENT BELOW NAVBAR */}
 
-          {/* Filter */}
           <div className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-100">
             <CategoryFilter />
           </div>
@@ -64,7 +60,6 @@ const totalPages = Math.ceil(articles.length / 6);
           {loading && <p>Loading...</p>}
           {error && <p className="text-red-500">{error}</p>}
 
-          {/* 🔥 GRID CARDS */}
           <div className="grid sm:grid-cols-2 gap-6">
 
           {currentArticles.map((article, index) => (
@@ -72,10 +67,7 @@ const totalPages = Math.ceil(articles.length / 6);
 
                 <NewsCard article={article} />
 
-                {/* ✅ ADS AFTER EVERY 2 ARTICLES */}
-                {/* {index % 2 === 1 && index < 4 && ads.length > 0 && (
-                  <AdCard ad={ads[index % ads.length]} />
-                )} */}
+              
 
               </div>
             ))}

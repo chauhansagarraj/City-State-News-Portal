@@ -51,9 +51,9 @@ const MyCampaigns = () => {
 
     // { loading && <p className="text-center">Updating...</p> }
 
-    console.log("campaigns:", campaigns);
-console.log("type:", typeof campaigns);
-console.log("isArray:", Array.isArray(campaigns));
+//     console.log("campaigns:", campaigns);
+// console.log("type:", typeof campaigns);
+// console.log("isArray:", Array.isArray(campaigns));
 const navigate = useNavigate();
 
     return (
@@ -380,7 +380,7 @@ const navigate = useNavigate();
         <button
         onClick={() => {
   dispatch(addFunds(Number(amount))).then(() => {
-    dispatch(getWallet()); // ✅ sync again
+    dispatch(getWallet()); 
   });
   setShowAddFunds(false);
   setAmount("");

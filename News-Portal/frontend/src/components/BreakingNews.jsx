@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 
 const BreakingNews = ({ articles }) => {
 
-  // 🧠 Group articles by date (Today, Yesterday, Older)
   const groupArticlesByDate = () => {
     const groups = {};
 

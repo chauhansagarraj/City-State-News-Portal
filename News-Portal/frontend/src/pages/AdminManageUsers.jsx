@@ -25,7 +25,6 @@ const AdminManageUsers = () => {
     return (
         <div className="space-y-6">
 
-            {/* 🔹 Tabs */}
             <div className="flex gap-4">
                 <button
                     onClick={() => setTab("all")}
@@ -44,7 +43,6 @@ const AdminManageUsers = () => {
                 </button>
             </div>
 
-            {/* 🔹 Table */}
             <div className="bg-white rounded-2xl shadow p-4">
                 <table className="w-full text-left">
                     <thead>
@@ -74,7 +72,6 @@ const AdminManageUsers = () => {
 
                                 <td className="flex gap-2 py-2">
 
-                                    {/* ✅ Pending Actions */}
                                     {tab === "pending" && (
                                         <>
                                             <button
@@ -132,7 +129,7 @@ const AdminManageUsers = () => {
                                         </>
                                     )}
 
-                                    {/* ✅ Block/Unblock */}
+                                   
                                     {user.status === "active" ? (
                                         <button
                                             onClick={() => {

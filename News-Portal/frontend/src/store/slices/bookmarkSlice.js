@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import API from "../../services/axios"
 
-// 🔥 Only toggle
+
 export const toggleBookmark = createAsyncThunk(
   "bookmark/toggle",
   async (articleId, thunkAPI) => {

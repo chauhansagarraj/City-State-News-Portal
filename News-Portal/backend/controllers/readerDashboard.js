@@ -13,7 +13,6 @@ export const getReaderDashboard = async (req, res) => {
       $or: [{ city }, { state }],
     })
       .sort({ createdAt: -1 })
-      .limit(5)
       .select("title category city state images createdAt")
       .populate("author", "name");
 
@@ -23,7 +22,6 @@ export const getReaderDashboard = async (req, res) => {
       likes: userId,
     })
       .sort({ createdAt: -1 })
-      .limit(5)
       .select("title category city state images createdAt")
       .populate("author", "name");
 
@@ -33,7 +31,6 @@ export const getReaderDashboard = async (req, res) => {
       status: { $ne: "deleted" },
     })
       .sort({ createdAt: -1 })
-      .limit(5)
       .populate("article", "title");
 
     //  Activity Summary
@@ -52,7 +49,7 @@ export const getReaderDashboard = async (req, res) => {
     select: "title category city state images createdAt",
   });
 
-const savedArticles = user.savedArticles.slice(0, 5);
+const savedArticles = user.savedArticles.slice(0, 50);
 
     res.status(200).json({
       success: true,

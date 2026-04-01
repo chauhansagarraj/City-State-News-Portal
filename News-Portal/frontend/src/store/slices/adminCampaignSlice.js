@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../services/axios";
 import { showToast } from "./uiMessageSlice";
 
-// 🔹 Fetch all campaigns
 export const fetchAllCampaigns = createAsyncThunk(
   "admin/manage-campaigns",
   async ({ page = 1 }, thunkAPI) => {
@@ -15,7 +14,6 @@ export const fetchAllCampaigns = createAsyncThunk(
   }
 );
 
-// 🔹 Fetch pending campaigns
 export const fetchPendingCampaigns = createAsyncThunk(
   "admin/pendingCampaigns",
   async (_, thunkAPI) => {
@@ -28,7 +26,6 @@ export const fetchPendingCampaigns = createAsyncThunk(
   }
 );
 
-// 🔹 Approve campaign
 export const approveCampaign = createAsyncThunk(
   "admin/approveCampaign",
   async (id, thunkAPI) => {
@@ -47,7 +44,6 @@ export const approveCampaign = createAsyncThunk(
   }
 );
 
-// 🔹 Reject campaign
 export const rejectCampaign = createAsyncThunk(
   "admin/rejectCampaign",
   async ({ id, reason }, thunkAPI) => {

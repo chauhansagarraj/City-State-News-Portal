@@ -6,16 +6,13 @@ const BookmarkButton = ({ articleId }) => {
   const dispatch = useDispatch();
 const { savedArticles  } = useSelector((state) => state.reader);
 const { user } = useSelector((state) => state.auth);
-  // 🔥 Check saved
   const isSaved = savedArticles.some(
     (a) => a._id === articleId || a === articleId
   );
 
  const handleClick = () => {
-    // 🔥 1. Instant UI update
     dispatch(updateSavedArticles(articleId));
 
-    // 🔥 2. Backend call
     dispatch(toggleBookmark(articleId));
   };
 

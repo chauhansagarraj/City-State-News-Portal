@@ -174,7 +174,7 @@ if (req.user.role !== "admin") {
       });
     }
 
-    // 🔥 Toggle logic
+    //  Toggle logic
     comment.status =
       comment.status === "hidden" ? "visible" : "hidden";
 

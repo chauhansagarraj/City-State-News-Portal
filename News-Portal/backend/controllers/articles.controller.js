@@ -244,10 +244,10 @@ export const viewArticle = async (req, res) => {
       });
     }
 
-    // ✅ Increase total views
+    //  Increase total views
     article.views += 1;
 
-    // ✅ Track daily views
+    //  Track daily views
     const today = new Date().toISOString().split("T")[0];
 
     const existing = article.viewsHistory.find(

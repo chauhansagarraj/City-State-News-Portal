@@ -35,7 +35,7 @@ const DashboardHome = () => {
 
   if (!dashboard) return <p>Loading...</p>;
 
-  // 📊 Line Chart Data (dummy timeline)
+  
   const lineData = [
     { name: "Clicks", value: dashboard.totalClicks },
     { name: "Impressions", value: dashboard.totalImpressions },
@@ -47,7 +47,6 @@ const STATUS_COLORS = {
   draft: "#6b7280",
   completed: "#a855f7",
 };
-  // 🥧 Pie Chart Data
   const pieData = Object.entries(dashboard.statusCounts).map(
   ([key, value]) => ({
     name: key,
@@ -60,7 +59,6 @@ const STATUS_COLORS = {
   return (
     <div className="space-y-6">
 
-      {/* 🔥 Stats Cards */}
     <div className="grid grid-cols-3 gap-6">
   <Card title="Total Campaigns" value={dashboard.totalCampaigns} style={cardStyles[0]} />
   <Card title="Active Campaigns" value={dashboard.activeCampaigns} style={cardStyles[1]} />
@@ -71,10 +69,8 @@ const STATUS_COLORS = {
   <Card title="Wallet" value={`₹${dashboard.walletBalance}`} style={cardStyles[6]} />
 </div>
 
-      {/* 📊 Charts */}
       <div className="grid grid-cols-2 gap-6">
 
-        {/* 📈 Line Chart */}
         <div className="bg-white p-5 rounded-xl shadow">
           <h2 className="font-semibold mb-4">Performance</h2>
 
@@ -88,7 +84,6 @@ const STATUS_COLORS = {
           </ResponsiveContainer>
         </div>
 
-        {/* 🥧 Pie Chart */}
         <div className="bg-white p-5 rounded-xl shadow">
           <h2 className="font-semibold mb-4">Campaign Status</h2>
 
@@ -116,7 +111,6 @@ const STATUS_COLORS = {
 
 export default DashboardHome;
 
-// 🔹 Reusable Card Component
 const Card = ({ title, value, style }) => (
   <div
     className={`p-5 rounded-xl shadow hover:shadow-lg transition border-l-4 ${style.bg} ${style.border}`}

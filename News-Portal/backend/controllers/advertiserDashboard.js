@@ -41,7 +41,7 @@ campaigns.forEach((c) => {
       (sum, c) => sum + (c.budget?.spent || 0),
       0
     );
-    // 🔥 Total Revenue
+    //  Total Revenue
 // const totalRevenue = campaigns.reduce(
 //   (sum, c) =>
 //     sum +

@@ -48,10 +48,8 @@ const SingleCampaignAnalytics = () => {
   return (
     <div className="space-y-6">
 
-      {/* 🔥 Title */}
       <h1 className="text-2xl font-bold">{data.title}</h1>
 
-      {/* 📊 Stats Cards */}
       <div className="grid grid-cols-3 gap-6">
         <Card title="Clicks" value={data.clicks} color={colors.blue} />
   
@@ -65,7 +63,6 @@ const SingleCampaignAnalytics = () => {
 {/* <Card title="ROI" value={`${data.roi}%`} /> */}
       </div>
 
-      {/* 📈 Chart */}
       <div className="bg-white p-5 rounded-xl shadow">
         <h2 className="font-semibold mb-4">Monthly Performance</h2>
 
@@ -94,7 +91,6 @@ const SingleCampaignAnalytics = () => {
 </ResponsiveContainer>
       </div>
 
-      {/* 🧾 Recent Activity (Optional but powerful) */}
       <div className="bg-white p-5 rounded-xl shadow">
         <h2 className="font-semibold mb-4">Recent Clicks</h2>
 
@@ -111,7 +107,6 @@ const SingleCampaignAnalytics = () => {
   );
 };
 
-// 🔹 Card Component
 const Card = ({ title, value, color }) => (
   <div className={`p-5 rounded-xl shadow hover:shadow-md transition border-l-4 ${color.bg}`}>
     <p className="text-gray-500">{title}</p>

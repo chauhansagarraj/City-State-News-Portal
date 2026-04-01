@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../services/axios";
 
-// 🔹 Fetch all users
 export const fetchAllUsers = createAsyncThunk(
   "admin/manage-users",
   async () => {
@@ -10,7 +9,6 @@ export const fetchAllUsers = createAsyncThunk(
   }
 );
 
-// 🔹 Fetch pending users
 export const fetchPendingUsers = createAsyncThunk(
   "admin/pending-users",
   async () => {
@@ -19,7 +17,6 @@ export const fetchPendingUsers = createAsyncThunk(
   }
 );
 
-// 🔹 Actions
 export const approveUser = createAsyncThunk(
   "admin/approve-user",
   async (id) => {

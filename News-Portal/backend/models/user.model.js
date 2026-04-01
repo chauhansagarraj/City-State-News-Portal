@@ -16,7 +16,16 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+// subscription: {
+//   isSubscribed: { type: Boolean, default: false },
+//   subscribedAt: Date,
+//   expiresAt: Date,
+// },
 
+// dailyReads: {
+//   count: { type: Number, default: 0 },
+//   date: { type: String }
+// },
     password: {
       type: String,
       required: true,

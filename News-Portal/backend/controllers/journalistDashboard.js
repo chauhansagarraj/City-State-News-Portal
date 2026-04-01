@@ -16,7 +16,7 @@ export const getJournalistDashboard = async (req, res) => {
     const rejected = articles.filter(a => a.status === "rejected").length;
     const published = articles.filter(a => a.status === "published").length;
 
-    // 👁️ Total views across all articles
+    //  Total views across all articles
     const totalViews = articles.reduce(
       (sum, article) => sum + article.views,
       0

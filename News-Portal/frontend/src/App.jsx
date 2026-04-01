@@ -57,7 +57,6 @@ function App() {
   <Route path="articles/edit/:id" element={<EditArticle />} />
   <Route path="my-articles" element={<MyArticles />} />
 </Route>
-        {/* <Route path="/articles/view/:id" element={<ProtectedRoute><ViewArticle /></ProtectedRoute>} /> */}
         <Route
           path="/reader"
           element={<ProtectedRoute><ReaderDashboardLayout /></ProtectedRoute>}

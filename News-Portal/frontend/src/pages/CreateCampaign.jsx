@@ -50,7 +50,7 @@ const CreateCampaign = () => {
         e.preventDefault();
 
         if (walletBalance <= 0) {
-            alert("❌ Please add funds before creating a campaign");
+            alert(" Please add funds before creating a campaign");
             return;
         }
 

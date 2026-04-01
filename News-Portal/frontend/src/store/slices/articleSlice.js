@@ -277,7 +277,7 @@ const articleSlice = createSlice({
       })
       .addCase(createArticle.rejected, (state, action) => {
   state.loading = false;
-  state.error = action.payload;   // ✅ THIS IS MISSING
+  state.error = action.payload;   
   state.message = null;
 })
       .addCase(createArticle.fulfilled, (state, action) => {
@@ -309,7 +309,7 @@ const articleSlice = createSlice({
   state.error = null;
 })
 .addCase(submitArticle.rejected, (state, action) => {
-  state.error = action.payload;   // ✅ REQUIRED
+  state.error = action.payload;   
   state.message = null;
 })
 

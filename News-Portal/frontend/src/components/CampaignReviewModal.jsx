@@ -15,7 +15,7 @@ const CampaignReviewModal = ({ campaign, onClose, dispatch, actions }) => {
       {/* MODAL BOX */}
    <div className="bg-white w-full max-w-3xl max-h-[90vh] rounded-2xl shadow-lg flex flex-col relative">
 
-  {/* ❌ CLOSE BUTTON */}
+  {/*  CLOSE BUTTON */}
   <button
     onClick={onClose}
     className="absolute top-3 right-3 text-gray-600 text-xl hover:text-gray-800"
@@ -23,12 +23,12 @@ const CampaignReviewModal = ({ campaign, onClose, dispatch, actions }) => {
     ✖
   </button>
 
-  {/* 🔹 HEADER (FIXED) */}
+  {/*  HEADER (FIXED) */}
   <div className="p-6 border-b">
     <h2 className="text-xl font-semibold">Campaign Details</h2>
   </div>
 
-  {/* 🔥 SCROLLABLE CONTENT */}
+  {/*  SCROLLABLE CONTENT */}
   <div className="p-6 overflow-y-auto flex-1">
 
     <div className="grid grid-cols-2 gap-6">
@@ -70,7 +70,7 @@ const CampaignReviewModal = ({ campaign, onClose, dispatch, actions }) => {
     </div>
   </div>
 
-  {/* 🔹 ACTION BUTTONS (FIXED FOOTER) */}
+  {/*  ACTION BUTTONS (FIXED FOOTER) */}
   {campaign.status === "pending" && (
     <div className="p-4 border-t flex justify-end gap-4">
 

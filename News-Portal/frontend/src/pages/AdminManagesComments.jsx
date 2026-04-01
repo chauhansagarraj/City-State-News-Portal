@@ -22,7 +22,6 @@ const AdminComments = () => {
     return (
       <div className="space-y-6">
 
-  {/* 🔹 Header */}
   <div className="flex justify-between items-center">
     <h2 className="text-xl font-semibold">Manage Comments</h2>
     <span className="text-sm text-gray-500">
@@ -30,7 +29,6 @@ const AdminComments = () => {
     </span>
   </div>
 
-  {/* 🔹 Filters */}
   <div className="flex gap-3">
     {["", "visible", "hidden"].map((s) => (
       <button
@@ -72,24 +70,20 @@ const AdminComments = () => {
           comments.map((c) => (
             <tr key={c._id} className="border-t hover:bg-gray-50">
 
-              {/* COMMENT */}
               <td className="p-3 max-w-[300px]">
                 <p className="truncate">
                   {c.text || c.content || "No content"}
                 </p>
               </td>
 
-              {/* USER */}
               <td className="p-3 text-center">
                 {c.user?.name || "Unknown"}
               </td>
 
-              {/* ARTICLE */}
               <td className="p-3 text-center max-w-[200px] truncate">
                 {c.article?.title || "Deleted Article"}
               </td>
 
-              {/* STATUS */}
               <td className="p-3 text-center">
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -104,7 +98,6 @@ const AdminComments = () => {
                 </span>
               </td>
 
-              {/* ACTION */}
               <td className="p-3 text-center">
                 <button
                   onClick={() => {
@@ -143,7 +136,6 @@ const AdminComments = () => {
     </table>
   </div>
 
-  {/* 🔥 PAGINATION */}
   <div className="flex justify-between items-center">
 
     <button

@@ -70,7 +70,7 @@ const validate = () => {
             <div className="bg-white shadow-lg rounded-lg w-full max-w-md p-8">
 
                 <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
-                    CityState News
+                    City&State News
                 </h1>
 
                 <h2 className="text-xl font-semibold text-center mb-6">

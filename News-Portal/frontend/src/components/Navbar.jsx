@@ -233,15 +233,6 @@ const Navbar = () => {
               </Link>
             )}
 
-            {/* <button
-              className="text-red-500 hover:text-red-400 text-2xl mt-4"
-              onClick={() => {
-                setMenuOpen(false);
-                // dispatch logout action here
-              }}
-            >
-              Logout
-            </button> */}
           </div>
         </div>
       )}

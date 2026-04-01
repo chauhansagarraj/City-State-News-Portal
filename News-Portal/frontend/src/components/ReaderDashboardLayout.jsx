@@ -28,7 +28,7 @@ const ReaderDashboardLayout = () => {
           👤 Profile
         </Link>
 
-        <Link to="/auth/changePassword" className={linkClass("ChangePassword")}>
+        <Link to="/auth/change-password" className={linkClass("ChangePassword")}>
           🔐 Change Password
         </Link>
 

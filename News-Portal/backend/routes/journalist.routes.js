@@ -6,7 +6,7 @@ import { verifyApprovedUser } from "../middleware/verifiedUser.js";
 import upload from "../middleware/uploadMiddleware.js";
 const router = express.Router();
 
-// Create article (Journalists only)
+// Create article 
 
 router.post(
   "/articles",

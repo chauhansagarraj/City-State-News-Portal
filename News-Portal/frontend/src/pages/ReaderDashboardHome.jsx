@@ -17,7 +17,6 @@ const [savedVisible, setSavedVisible] = useState(3);
   return (
     <div className="space-y-10">
 
-      {/* 🔹 Activity Cards */}
       <div className="grid grid-cols-2 gap-4">
 
         <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-5 rounded-xl shadow">
@@ -32,7 +31,6 @@ const [savedVisible, setSavedVisible] = useState(3);
 
       </div>
 
-      {/* 🔹 Recommended Articles */}
       <div>
         <h2 className="text-2xl font-semibold mb-4">📍 Recommended</h2>
 
@@ -43,7 +41,6 @@ const [savedVisible, setSavedVisible] = useState(3);
               className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
             >
 
-              {/* Image */}
               <img
                 src={a.images?.[0]}
                 alt=""
@@ -76,86 +73,74 @@ const [savedVisible, setSavedVisible] = useState(3);
         </div>
       </div>
 
-      {/* 🔹 Liked Articles */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">❤️ Liked Articles</h2>
+     <div>
+  <h2 className="text-2xl font-semibold mb-4">❤️ Liked Articles</h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-         {likedArticles?.slice(0, likedVisible).map((a , index) => (
-          <>
-            <div
-              key={a._id}
-              className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
-            >
+  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {likedArticles?.slice(0, likedVisible).map((a) => (
+      <div
+        key={a._id}
+        className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+      >
+        <img
+          src={a.images?.[0]}
+          alt=""
+          className="w-full h-40 object-cover"
+        />
 
-              <img
-                src={a.images?.[0]}
-                alt=""
-                className="w-full h-40 object-cover"
-              />
+        <div className="p-4">
+          <h3 className="font-bold text-lg mb-1 line-clamp-2">
+            {a.title}
+          </h3>
 
-              <div className="p-4">
-                <h3 className="font-bold text-lg mb-1 line-clamp-2">
-                  {a.title}
-                </h3>
+          <p className="text-sm text-gray-500 mb-2">
+            {a.city}, {a.state}
+          </p>
 
-                <p className="text-sm text-gray-500 mb-2">
-                  {a.city}, {a.state}
-                </p>
+          <Link
+            to={`/article/${a._id}`}
+            className="text-red-500 font-semibold hover:underline"
+          >
+            Read More →
+          </Link>
+        </div>
+      </div>
+    ))}
+  </div>
 
-                <Link
-                  to={`/article/${a._id}`}
-                  className="text-red-500 font-semibold hover:underline"
-                >
-                  Read More →
-                </Link>
-              </div>
-
-            </div>
-  {/* Show More */}
-  {index === 2 && likedArticles?.length > likedVisible && (
-  <div className="flex justify-center gap-4 mt-6">
+  {/*  Show More / Show Less OUTSIDE map */}
+ <div className="mt-4 text-center">
+  {likedVisible < likedArticles?.length ? (
     <button
-      onClick={() => setLikedVisible(prev => prev + 3)}
+      onClick={() => setLikedVisible((prev) => prev + 3)}
       className="text-red-500 font-semibold hover:underline"
     >
-       Show More →
+      Show More →
     </button>
-    </div>
-  )}
-  </>
-          ))}
-
-
-  {/* Show Less */}
-  {likedVisible > 3 && (
+  ) : likedVisible > 3 ? (
     <button
       onClick={() => setLikedVisible(3)}
       className="text-red-800 font-semibold hover:underline"
     >
       Show Less
     </button>
-  )}
+  ) : null}
+</div>
+</div>
 
-        </div>
-      </div>
-
-      {/* 🔹 Saved Articles */}
 <div>
   <h2 className="text-2xl font-semibold mb-4">🔖 Saved Articles</h2>
 
   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {savedArticles?.length === 0 ? (
+    
+    {!savedArticles || savedArticles.length === 0 ? (
       <p className="text-gray-500">No saved articles yet</p>
     ) : (
-      savedArticles?.slice(0, savedVisible ).map((a , index) => (
-        <>
+      savedArticles.slice(0, savedVisible).map((a) => (
         <div
           key={a._id}
           className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
         >
-
-          {/* Image */}
           <img
             src={a.images?.[0]}
             alt=""
@@ -182,33 +167,35 @@ const [savedVisible, setSavedVisible] = useState(3);
               Read More →
             </Link>
           </div>
-
         </div>
-         {index === 2 && savedArticles?.length > savedVisible && (
-  <button
-    onClick={() => setSavedVisible(prev => prev + 3)}
-   className="text-red-500 font-semibold hover:underline"
-  >
-    Show More →
-  </button>
-)}
-
-</>
       ))
     )}
 
-{savedVisible > 3 && (
-  <button
-    onClick={() => setSavedVisible(3)}
-   className="text-red-500 font-semibold hover:underline"
-  >
-    Show Less
-  </button>
-)}
+  </div>
+
+  {/*  Show More / Show Less OUTSIDE grid */}
+  <div className="mt-4 text-center">
+    {savedArticles?.length > savedVisible && (
+      <button
+        onClick={() => setSavedVisible(prev => prev + 3)}
+        className="text-red-500 font-semibold hover:underline"
+      >
+        Show More →
+      </button>
+    )}
+
+    {savedVisible > 3 && (
+      <button
+        onClick={() => setSavedVisible(3)}
+        className="ml-4 text-red-500 font-semibold hover:underline"
+      >
+        Show Less
+      </button>
+    )}
   </div>
 </div>
 
-      {/* 🔹 Comments */}
+      {/*  Comments */}
       <div>
         <h2 className="text-2xl font-semibold mb-4">💬 Your Comments</h2>
 

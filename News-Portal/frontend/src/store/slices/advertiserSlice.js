@@ -45,7 +45,7 @@ export const deleteCampaign = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const res = await API.delete(`/advertiser/delete/${id}`);
-      return res.data; // ✅ FIX
+      return res.data; 
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
@@ -84,7 +84,7 @@ export const resumeCampaign = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const res = await API.put(`/advertiser/resume/${id}`);
-      return res.data; // ✅ FIX
+      return res.data; 
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
@@ -142,7 +142,7 @@ const advertiserSlice = createSlice({
      .addCase(getMyCampaigns.fulfilled, (state, action) => {
   state.loading = false;
 
-  state.campaigns = action.payload || []; // ✅ FIX
+  state.campaigns = action.payload || []; 
 })
       .addCase(getMyCampaigns.rejected, (state, action) => {
         state.loading = false;
@@ -158,8 +158,7 @@ const advertiserSlice = createSlice({
         state.error = action.payload;
       })
 
-      // UPDATE
-      // ===== UPDATE =====
+   
       .addCase(updateCampaign.fulfilled, (state, action) => {
         const updated = action.payload;
 

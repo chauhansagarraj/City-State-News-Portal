@@ -44,7 +44,6 @@ const CategoryPage = () => {
 
   </div>
 
-  {/* RIGHT (optional) */}
   <div className="col-span-12 lg:col-span-3">
     {/* You can reuse TrendingNews here */}
   </div>

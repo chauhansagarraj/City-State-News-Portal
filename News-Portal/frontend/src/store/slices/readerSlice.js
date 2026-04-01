@@ -33,12 +33,12 @@ const readerSlice = createSlice({
       );
   
       if (exists) {
-        // ❌ remove
+        
         state.savedArticles = state.savedArticles.filter(
           (a) => a._id !== articleId
         );
       } else {
-        // ✅ add (minimal object)
+        
         state.savedArticles.push({ _id: articleId });
       }
     },

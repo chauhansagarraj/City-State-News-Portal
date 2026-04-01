@@ -58,7 +58,6 @@ const campaignPieData = [
   return (
     <div className="space-y-6">
 
-      {/* 🔥 TOP CARDS */}
       <div className="grid grid-cols-4 gap-6">
         <Card title="Total Users" value={users.totalUsers} color="bg-blue-500" />
         <Card title="Total Articles" value={articles.totalArticles} color="bg-green-500" />
@@ -66,10 +65,8 @@ const campaignPieData = [
         <Card title="Revenue" value={`₹${rev.totalRevenue}`} color="bg-orange-500" />
       </div>
 
-      {/* 📊 CHARTS */}
       <div className="grid grid-cols-2 gap-6">
 
-        {/* Revenue Chart */}
         <div className="bg-white p-5 rounded-2xl shadow">
           <h2 className="font-semibold mb-4">Monthly Revenue</h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -82,7 +79,6 @@ const campaignPieData = [
           </ResponsiveContainer>
         </div>
 
-        {/* Top Campaigns */}
         <div className="bg-white p-5 rounded-2xl shadow">
           <h2 className="font-semibold mb-4">Top Campaigns (Clicks)</h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -96,19 +92,15 @@ const campaignPieData = [
         </div>
       </div>
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
-  {/* 👥 USER PIE */}
   <PieCard title="User Distribution" data={userPieData} />
 
-  {/* 📰 ARTICLE PIE */}
   <PieCard title="Article Distribution" data={articlePieData} />
 
-  {/* 📢 CAMPAIGN PIE */}
   <PieCard title="Campaign Distribution" data={campaignPieData} />
 
 </div>
 
 
-      {/* 📦 EXTRA STATS */}
       <div className="grid grid-cols-3 gap-6">
 
         <StatCard title="Active Users" value={users.activeUsers} />

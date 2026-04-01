@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../services/axios";
 
-// 🔥 Fetch comments with pagination
 export const fetchAdminComments = createAsyncThunk(
   "admin/manage-comments",
   async ({ page = 1, status = "" }, thunkAPI) => {
@@ -16,7 +15,6 @@ export const fetchAdminComments = createAsyncThunk(
   }
 );
 
-// 🔥 Toggle hide/unhide
 export const toggleComment = createAsyncThunk(
   "admin/toggle",
   async (id, thunkAPI) => {

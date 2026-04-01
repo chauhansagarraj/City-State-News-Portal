@@ -55,7 +55,6 @@ useEffect(() => {
 
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-8">
 
-        {/* Title */}
         <h1 className="text-3xl font-bold text-center text-red-600 mb-2">
           Change Password
         </h1>
@@ -64,7 +63,6 @@ useEffect(() => {
           Update your account password securely
         </p>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
 
           {/* Current Password */}
@@ -97,21 +95,18 @@ useEffect(() => {
             className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
 
-          {/* Success Message */}
           {message && (
             <div className="bg-green-100 text-green-700 p-3 rounded-lg">
               {message}
             </div>
           )}
 
-          {/* Error Message */}
           {error && (
             <div className="bg-red-100 text-red-700 p-3 rounded-lg">
               {error}
             </div>
           )}
 
-          {/* Button */}
           <button
             type="submit"
             className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition duration-200"

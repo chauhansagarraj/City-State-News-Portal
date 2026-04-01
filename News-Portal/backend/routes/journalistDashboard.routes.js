@@ -5,7 +5,7 @@ import { verifyApprovedUser } from "../middleware/verifiedUser.js";
 
 const router = express.Router();
 
-// 🧑‍💻 Journalist Dashboard
+//  Journalist Dashboard
 router.get(
   "/",
   protect,

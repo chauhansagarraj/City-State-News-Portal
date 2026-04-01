@@ -132,7 +132,7 @@ const AdminCampaigns = () => {
         </table>
       </div>
 
-      {/* 🔹 Pagination */}
+      {/*  Pagination */}
       {activeTab === "all" && (
         <div className="flex justify-between items-center">
           <button

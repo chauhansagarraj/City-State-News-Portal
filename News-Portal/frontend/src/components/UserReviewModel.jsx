@@ -7,7 +7,6 @@ const UserReviewModal = ({ user, onClose, dispatch, actions }) => {
             {/* MODAL BOX */}
             <div className="bg-white w-full max-w-3xl rounded-2xl shadow-lg p-6 relative">
 
-                {/* ❌ CLOSE BUTTON */}
                 <button
                     onClick={onClose}
                     className="absolute top-3 right-3 text-gray-600 text-xl"
@@ -15,12 +14,10 @@ const UserReviewModal = ({ user, onClose, dispatch, actions }) => {
                     ✖
                 </button>
 
-                {/* 🧑 USER INFO */}
                 <h2 className="text-xl font-semibold mb-4">User Details</h2>
 
                 <div className="grid grid-cols-2 gap-6">
 
-                    {/* LEFT SIDE */}
                     <div className="space-y-2">
                         <p><b>Name:</b> {user.name}</p>
                         <p><b>Email:</b> {user.email}</p>
@@ -45,7 +42,6 @@ const UserReviewModal = ({ user, onClose, dispatch, actions }) => {
                         )}
                     </div>
 
-                    {/* RIGHT SIDE (IMAGE) */}
                     <div>
                         <h3 className="font-semibold mb-2">ID Proof</h3>
 
@@ -62,7 +58,6 @@ const UserReviewModal = ({ user, onClose, dispatch, actions }) => {
 
                 </div>
 
-                {/* 🔥 ACTION BUTTONS */}
                 <div className="flex justify-end gap-4 mt-6">
 
                     <button
