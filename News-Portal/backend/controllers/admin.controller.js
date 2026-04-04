@@ -338,7 +338,7 @@ export const getAllCampaignRevenue = async (req, res) => {
       const costPerClick = campaign.budget?.costPerClick || 0;
       const costPerImpression = campaign.budget?.costPerImpression || 0;
 
-      // ✅ Correct Revenue Formula
+      //  Correct Revenue Formula
       const revenue =
         clicks * costPerClick +
         impressions * costPerImpression;
@@ -384,6 +384,8 @@ export const getTopCampaignsByRevenue = async (req, res) => {
         _id: campaign._id,
         title: campaign.title,
         revenue,
+        clicks,
+        impressions,
       };
     });
 

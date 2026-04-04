@@ -32,7 +32,7 @@ const AdminManageArticles = () => {
   return (
     <div className="space-y-6">
 
-      {/* 🔹 Tabs */}
+      {/* Tabs */}
       <div className="flex gap-4">
         <button
           onClick={() => setTab("all")}
@@ -55,7 +55,7 @@ const AdminManageArticles = () => {
         </button>
       </div>
 
-      {/* 🔹 Table */}
+      {/*  Table */}
       <div className="bg-white rounded-2xl gap-4 shadow p-8 overflow-x-auto">
         <table className="w-full text-left table-fixed">
           <thead>

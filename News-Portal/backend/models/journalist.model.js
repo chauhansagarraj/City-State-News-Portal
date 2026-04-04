@@ -48,7 +48,7 @@ const articleSchema = new mongoose.Schema(
 
     images: [
       {
-        type: String, // URL or file path
+        type: String, 
       },
     ],
 
@@ -97,7 +97,7 @@ const articleSchema = new mongoose.Schema(
 
     viewsHistory: [
   {
-    date: { type: String }, // "2026-03-19"
+    date: { type: String },
     count: { type: Number, default: 0 }
   }
 ],

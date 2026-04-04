@@ -30,6 +30,7 @@ import AdminManageComments from "./pages/AdminManagesComments.jsx";
 import AdminManageCampaigns from "./pages/AdminManageCampaigns.jsx";
 import AdminRevenue from "./pages/AdminRevenue.jsx";
 import TopCampaigns from "./pages/AdminTopCampaign.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
 import "./indec.css"
 import Toast from "./components/Toast.jsx";
 
@@ -48,6 +49,7 @@ function App() {
         <Route path="/category/:category" element={<CategoryPage />} />
         <Route path="/profile/complete" element={<ProtectedRoute><ProfileComplete /></ProtectedRoute>} />
         <Route path="/auth/change-password" element={<ChangePassword />} />
+          <Route path="/about" element={<AboutUs />} />
        <Route
   path="/journalist"
   element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}

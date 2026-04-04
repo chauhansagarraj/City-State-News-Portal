@@ -143,15 +143,17 @@ const Navbar = () => {
         >
           ✖
         </button>
-
           <div className="flex flex-col gap-6 text-1.5xl">
-            <Link
-              to="/profile/complete"
-              className="hover:text-red-400"
-              onClick={() => setMenuOpen(false)}
-            >
-              Profile
-            </Link>
+            
+       {(loggedInUser?.role === "advertiser" || loggedInUser?.role === "journalist") && (
+  <Link
+    to="/profile/complete"
+    className="hover:text-red-400"
+    onClick={() => setMenuOpen(false)}
+  >
+    Profile
+  </Link>
+)}
  <Link
                 to="/auth/change-password"
                 className="hover:text-red-400"
@@ -159,6 +161,7 @@ const Navbar = () => {
               >
               Change Password
             </Link>
+
 
             {loggedInUser.role === "reader" && (
               <Link
@@ -232,6 +235,13 @@ const Navbar = () => {
                Dashboard
               </Link>
             )}
+             <Link
+                to="/about"
+                className="hover:text-red-400"
+                onClick={() => setMenuOpen(false)}
+              >
+              About Us
+            </Link>
 
           </div>
         </div>

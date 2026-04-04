@@ -199,37 +199,6 @@ export const submitForApproval = async (req, res) => {
   }
 };
 
-// export const viewArticle = async (req, res) => {
-//   try {
-//     const articleId = req.params.id;
-
-//     const article = await Article.findOneAndUpdate(
-//       { _id: articleId, status: "published" },
-//       { $inc: { views: 1 } },
-//       { new: true }
-//     ).populate("author", "name");
-
-//     if (!article) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Article not found or not published",
-//       });
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       article,
-//     });
-
-//   } catch (error) {
-//     console.error("View Article Error:", error);
-
-//     res.status(500).json({
-//       success: false,
-//       message: "Server error",
-//     });
-//   }
-// };
 
 export const viewArticle = async (req, res) => {
   try {

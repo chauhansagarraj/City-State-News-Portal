@@ -310,60 +310,110 @@ const JournalistDashboard = () => {
 </div> */}
 
             {/* 🔹 RECENT ARTICLES */}
-            <div className="bg-white p-4 rounded shadow">
+            <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
 
-                <h3 className="mb-4 font-semibold">Recent Articles</h3>
+  {/* Header */}
+  <div className="flex justify-between items-center mb-4">
+    <h3 className="text-lg font-semibold text-gray-800">Recent Articles</h3>
+    <span className="text-sm text-gray-500">
+      Showing {sortedArticles.slice(0, 10).length} articles
+    </span>
+  </div>
 
-                <table className="w-full">
+  {/* Table */}
+  <div className="overflow-x-auto">
+    <table className="w-full text-sm text-left">
 
-                    <thead className="bg-gray-100">
-                        <tr>
-                            <th className="p-2">Title</th>
-                            <th>Status</th>
-                            <th
-                                className="cursor-pointer"
-                                onClick={() => handleSort("date")}
-                            >
-                                Date {sortField === "date" ? (sortOrder === "asc" ? "↑" : "↓") : "⬍"}
-                            </th>
+      {/* Head */}
+      <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
+        <tr>
+          <th className="p-3">Title</th>
 
-                            <th
-                                className="cursor-pointer"
-                                onClick={() => handleSort("views")}
-                            >
-                                Views {sortField === "views" ? (sortOrder === "asc" ? "↑" : "↓") : "⬍"}
-                            </th>
+          <th className="p-3">Status</th>
 
-                            <th
-                                className="cursor-pointer"
-                                onClick={() => handleSort("likes")}
-                            >
-                                Likes {sortField === "likes" ? (sortOrder === "asc" ? "↑" : "↓") : "⬍"}
-                            </th>
-                        </tr>
-                    </thead>
+          <th
+            className="p-3 cursor-pointer hover:text-blue-600 transition"
+            onClick={() => handleSort("date")}
+          >
+            Date {sortField === "date" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}
+          </th>
 
-                    <tbody>
+          <th
+            className="p-3 cursor-pointer hover:text-blue-600 transition"
+            onClick={() => handleSort("views")}
+          >
+            Views {sortField === "views" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}
+          </th>
 
-                        {sortedArticles.slice(0, 10).map(a => (
-                            <tr key={a._id} className="border-t">
+          <th
+            className="p-3 cursor-pointer hover:text-blue-600 transition"
+            onClick={() => handleSort("likes")}
+          >
+            Likes {sortField === "likes" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}
+          </th>
+        </tr>
+      </thead>
 
-                                <td className="p-2">{a.title}</td>
-                                <td>{a.status}</td>
-                                <td>
-                                    {new Date(a.createdAt).toLocaleDateString()}
-                                </td>
-                                <td>{a.views}</td>
-                                <td>{a.likes?.length}</td>
+      {/* Body */}
+      <tbody className="divide-y">
 
-                            </tr>
-                        ))}
+        {sortedArticles.length === 0 ? (
+          <tr>
+            <td colSpan="5" className="text-center py-6 text-gray-400">
+              No articles found
+            </td>
+          </tr>
+        ) : (
+          sortedArticles.slice(0, 10).map((a) => (
+            <tr
+              key={a._id}
+              className="hover:bg-gray-50 transition duration-150"
+            >
+              {/* Title */}
+              <td className="p-3 font-medium text-gray-800">
+                {a.title}
+              </td>
 
-                    </tbody>
+              {/* Status Badge */}
+              <td className="p-3">
+                <span
+                  className={`px-3 py-1 text-xs rounded-full font-medium 
+                  ${
+                    a.status === "published"
+                      ? "bg-green-100 text-green-700"
+                      : a.status === "draft"
+                      ? "bg-yellow-100 text-yellow-700"
+                      : a.status === "rejected"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-gray-100 text-gray-600"
+                  }`}
+                >
+                  {a.status}
+                </span>
+              </td>
 
-                </table>
+              {/* Date */}
+              <td className="p-3 text-gray-600">
+                {new Date(a.createdAt).toLocaleDateString()}
+              </td>
 
-            </div>
+              {/* Views */}
+              <td className="p-3 text-gray-700 font-medium">
+                {a.views}
+              </td>
+
+              {/* Likes */}
+              <td className="p-3 text-gray-700 font-medium">
+                ❤️ {a.likes?.length || 0}
+              </td>
+            </tr>
+          ))
+        )}
+
+      </tbody>
+    </table>
+  </div>
+</div>
 
         </div>
     )
